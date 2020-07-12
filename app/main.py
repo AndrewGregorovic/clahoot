@@ -16,7 +16,28 @@ def randomizer(question_dict):
     # picks 10 random questions from the dictionary passed to the function
     random_questions = (random.sample(list(question_dict), k=10))
 
-    print(random_questions)
+    for i in random_questions:
+        # picks 4 of the 5 question choices for each question that has been randomly picked
+        random_choices = random.sample(list(question_dict[i]["choices"]), k=4)
+        print(random_choices)
+
+        # adds the appropriate values to the lists that will hold the current quiz data
+        question_list.append(question_dict[i]["question"])
+        choice_a_list.append(question_dict[i]["choices"][random_choices[0]])
+        choice_b_list.append(question_dict[i]["choices"][random_choices[1]])
+        choice_c_list.append(question_dict[i]["choices"][random_choices[2]])
+
+        # ensures that the answer will always be one of the choices, if it wasn't picked randomly it's assigned to the "d" choice for the question
+        if "answer" not in random_choices:
+            choice_d_list.append(question_dict[i]["choices"]["answer"])
+        else:
+            choice_d_list.append(question_dict[i]["choices"][random_choices[3]])
+
+    print(question_list)
+    print(choice_a_list)
+    print(choice_b_list)
+    print(choice_c_list)
+    print(choice_d_list)
 
     pass
 
