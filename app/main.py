@@ -1,6 +1,8 @@
 import os
 import random
 import time
+import question_dictionaries as qd
+
 
 # takes the question dictionary for the selected topic and randomly picks 10 questions and 4 choices for each
 # returns a list of lists containing the questions, choices and the answer key
@@ -49,6 +51,7 @@ def randomizer(question_dict, number_of_questions=10):
     # returns a list of lists which contains all the required values for the current quiz
     return [question_list, choice_a_list, choice_b_list, choice_c_list, choice_d_list, answer_key]
 
+
 # using the time taken to answer the question and if the user is correct,
 # calculates the user's points for the current question and returns the value
 def scoring():
@@ -58,6 +61,7 @@ def scoring():
     # i.e. 3rd correct answer in a row, answered in 15 secs gives 100 + 100 * (15/30) * 1.3 (.3 from 3 in a row)
     # if user answered incorrectly reset the count of correct answers in a row and return 0
     pass
+
 
 # reads and saves the leaderboard information to a separate text file and displays the leaderboard at the end of the quiz
 # updates the leaderboard if user makes it into the top 10
@@ -69,233 +73,48 @@ def leaderboard():
     # display leaderboard
     pass
 
-# dictionary used to store the possible questions and their choices
-test_dict = {
-            "question1": {
-                "question": "this is question 1",
-                "choices": {
-                    "answer": "this is question 1 answer",
-                    "wrong1": "this is question 1 wrong choice 1",
-                    "wrong2": "this is question 1 wrong choice 2",
-                    "wrong3": "this is question 1 wrong choice 3",
-                    "wrong4": "this is question 1 wrong choice 4"
-                }
-            },
-            "question2": {
-                "question": "this is question 2",
-                "choices": {
-                    "answer": "this is question 2 answer",
-                    "wrong1": "this is question 2 wrong choice 1",
-                    "wrong2": "this is question 2 wrong choice 2",
-                    "wrong3": "this is question 2 wrong choice 3",
-                    "wrong4": "this is question 2 wrong choice 4"
-                }
-            },
-            "question3": {
-                "question": "this is question 3",
-                "choices": {
-                    "answer": "this is question 3 answer",
-                    "wrong1": "this is question 3 wrong choice 1",
-                    "wrong2": "this is question 3 wrong choice 2",
-                    "wrong3": "this is question 3 wrong choice 3",
-                    "wrong4": "this is question 3 wrong choice 4"
-                }
-            },
-            "question4": {
-                "question": "this is question 4",
-                "choices": {
-                    "answer": "this is question 4 answer",
-                    "wrong1": "this is question 4 wrong choice 1",
-                    "wrong2": "this is question 4 wrong choice 2",
-                    "wrong3": "this is question 4 wrong choice 3",
-                    "wrong4": "this is question 4 wrong choice 4"
-                }
-            },
-            "question5": {
-                "question": "this is question 5",
-                "choices": {
-                    "answer": "this is question 5 answer",
-                    "wrong1": "this is question 5 wrong choice 1",
-                    "wrong2": "this is question 5 wrong choice 2",
-                    "wrong3": "this is question 5 wrong choice 3",
-                    "wrong4": "this is question 5 wrong choice 4"
-                }
-            },
-            "question6": {
-                "question": "this is question 6",
-                "choices": {
-                    "answer": "this is question 6 answer",
-                    "wrong1": "this is question 6 wrong choice 1",
-                    "wrong2": "this is question 6 wrong choice 2",
-                    "wrong3": "this is question 6 wrong choice 3",
-                    "wrong4": "this is question 6 wrong choice 4"
-                }
-            },
-            "question7": {
-                "question": "this is question 7",
-                "choices": {
-                    "answer": "this is question 7 answer",
-                    "wrong1": "this is question 7 wrong choice 1",
-                    "wrong2": "this is question 7 wrong choice 2",
-                    "wrong3": "this is question 7 wrong choice 3",
-                    "wrong4": "this is question 7 wrong choice 4"
-                }
-            },
-            "question8": {
-                "question": "this is question 8",
-                "choices": {
-                    "answer": "this is question 8 answer",
-                    "wrong1": "this is question 8 wrong choice 1",
-                    "wrong2": "this is question 8 wrong choice 2",
-                    "wrong3": "this is question 8 wrong choice 3",
-                    "wrong4": "this is question 8 wrong choice 4"
-                }
-            },
-            "question9": {
-                "question": "this is question 9",
-                "choices": {
-                    "answer": "this is question 9 answer",
-                    "wrong1": "this is question 9 wrong choice 1",
-                    "wrong2": "this is question 9 wrong choice 2",
-                    "wrong3": "this is question 9 wrong choice 3",
-                    "wrong4": "this is question 9 wrong choice 4"
-                }
-            },
-            "question10": {
-                "question": "this is question 10",
-                "choices": {
-                    "answer": "this is question 10 answer",
-                    "wrong1": "this is question 10 wrong choice 1",
-                    "wrong2": "this is question 10 wrong choice 2",
-                    "wrong3": "this is question 10 wrong choice 3",
-                    "wrong4": "this is question 10 wrong choice 4"
-                }
-            },
-            "question11": {
-                "question": "this is question 11",
-                "choices": {
-                    "answer": "this is question 11 answer",
-                    "wrong1": "this is question 11 wrong choice 1",
-                    "wrong2": "this is question 11 wrong choice 2",
-                    "wrong3": "this is question 11 wrong choice 3",
-                    "wrong4": "this is question 11 wrong choice 4"
-                }
-            },
-            "question12": {
-                "question": "this is question 12",
-                "choices": {
-                    "answer": "this is question 12 answer",
-                    "wrong1": "this is question 12 wrong choice 1",
-                    "wrong2": "this is question 12 wrong choice 2",
-                    "wrong3": "this is question 12 wrong choice 3",
-                    "wrong4": "this is question 12 wrong choice 4"
-                }
-            },
-            "question13": {
-                "question": "this is question 13",
-                "choices": {
-                    "answer": "this is question 13 answer",
-                    "wrong1": "this is question 13 wrong choice 1",
-                    "wrong2": "this is question 13 wrong choice 2",
-                    "wrong3": "this is question 13 wrong choice 3",
-                    "wrong4": "this is question 13 wrong choice 4"
-                }
-            },
-            "question14": {
-                "question": "this is question 14",
-                "choices": {
-                    "answer": "this is question 14 answer",
-                    "wrong1": "this is question 14 wrong choice 1",
-                    "wrong2": "this is question 14 wrong choice 2",
-                    "wrong3": "this is question 14 wrong choice 3",
-                    "wrong4": "this is question 14 wrong choice 4"
-                }
-            },
-            "question15": {
-                "question": "this is question 15",
-                "choices": {
-                    "answer": "this is question 15 answer",
-                    "wrong1": "this is question 15 wrong choice 1",
-                    "wrong2": "this is question 15 wrong choice 2",
-                    "wrong3": "this is question 15 wrong choice 3",
-                    "wrong4": "this is question 15 wrong choice 4"
-                }
-            },
-            "question16": {
-                "question": "this is question 16",
-                "choices": {
-                    "answer": "this is question 16 answer",
-                    "wrong1": "this is question 16 wrong choice 1",
-                    "wrong2": "this is question 16 wrong choice 2",
-                    "wrong3": "this is question 16 wrong choice 3",
-                    "wrong4": "this is question 16 wrong choice 4"
-                }
-            },
-            "question17": {
-                "question": "this is question 17",
-                "choices": {
-                    "answer": "this is question 17 answer",
-                    "wrong1": "this is question 17 wrong choice 1",
-                    "wrong2": "this is question 17 wrong choice 2",
-                    "wrong3": "this is question 17 wrong choice 3",
-                    "wrong4": "this is question 17 wrong choice 4"
-                }
-            },
-            "question18": {
-                "question": "this is question 18",
-                "choices": {
-                    "answer": "this is question 18 answer",
-                    "wrong1": "this is question 18 wrong choice 1",
-                    "wrong2": "this is question 18 wrong choice 2",
-                    "wrong3": "this is question 18 wrong choice 3",
-                    "wrong4": "this is question 18 wrong choice 4"
-                }
-            },
-            "question19": {
-                "question": "this is question 19",
-                "choices": {
-                    "answer": "this is question 19 answer",
-                    "wrong1": "this is question 19 wrong choice 1",
-                    "wrong2": "this is question 19 wrong choice 2",
-                    "wrong3": "this is question 19 wrong choice 3",
-                    "wrong4": "this is question 19 wrong choice 4"
-                }
-            },
-            "question20": {
-                "question": "this is question 20",
-                "choices": {
-                    "answer": "this is question 20 answer",
-                    "wrong1": "this is question 20 wrong choice 1",
-                    "wrong2": "this is question 20 wrong choice 2",
-                    "wrong3": "this is question 20 wrong choice 3",
-                    "wrong4": "this is question 20 wrong choice 4"
-                }
-            }
-}
 
 # welcome screen
 print("\n\n\n")
-print("        CCCCCCCCCCCCC lllllll                    hhhhhhh                                                           tttt            !!! ")
-print("     CCC::::::::::::C l:::::l                    h:::::h                                                        ttt:::t           !!:!!")
-print("   CC:::::::::::::::C l:::::l                    h:::::h                                                        t:::::t           !:::!")
-print("  C:::::CCCCCCCC::::C l:::::l                    h:::::h                                                        t:::::t           !:::!")
-print(" C:::::C       CCCCCC  l::::l    aaaaaaaaaaaaa    h::::h hhhhh           ooooooooooo       ooooooooooo    ttttttt:::::ttttttt     !:::!")
-print("C:::::C                l::::l    a::::::::::::a   h::::hh:::::hhh      oo:::::::::::oo   oo:::::::::::oo  t:::::::::::::::::t     !:::!")
-print("C:::::C                l::::l    aaaaaaaaa:::::a  h::::::::::::::hh   o:::::::::::::::o o:::::::::::::::o t:::::::::::::::::t     !:::!")
-print("C:::::C                l::::l             a::::a  h:::::::hhh::::::h  o:::::ooooo:::::o o:::::ooooo:::::o tttttt:::::::tttttt     !:::!")
-print("C:::::C                l::::l      aaaaaaa:::::a  h::::::h   h::::::h o::::o     o::::o o::::o     o::::o       t:::::t           !:::!")
-print("C:::::C                l::::l    aa::::::::::::a  h:::::h     h:::::h o::::o     o::::o o::::o     o::::o       t:::::t           !:::!")
-print("C:::::C                l::::l   a::::aaaa::::::a  h:::::h     h:::::h o::::o     o::::o o::::o     o::::o       t:::::t           !!:!!")
-print(" C:::::C       CCCCCC  l::::l  a::::a    a:::::a  h:::::h     h:::::h o::::o     o::::o o::::o     o::::o       t:::::t    tttttt  !!! ")
-print("  C:::::CCCCCCCC::::C l::::::l a::::a    a:::::a  h:::::h     h:::::h o:::::ooooo:::::o o:::::ooooo:::::o       t::::::tttt:::::t      ")
-print("   CC:::::::::::::::C l::::::l a:::::aaaa::::::a  h:::::h     h:::::h o:::::::::::::::o o:::::::::::::::o       tt::::::::::::::t  !!! ")
-print("     CCC::::::::::::C l::::::l  a::::::::::aa:::a h:::::h     h:::::h  oo:::::::::::oo   oo:::::::::::oo          tt:::::::::::tt !!:!!")
-print("        CCCCCCCCCCCCC llllllll   aaaaaaaaaa  aaaa hhhhhhh     hhhhhhh    ooooooooooo       ooooooooooo              ttttttttttt    !!! ")
+print("                  CCCCCCCCCCCCC lllllll                    hhhhhhh                                                           tttt            !!!           ")
+print("               CCC::::::::::::C l:::::l                    h:::::h                                                        ttt:::t           !!:!!          ")
+print("             CC:::::::::::::::C l:::::l                    h:::::h                                                        t:::::t           !:::!          ")
+print("            C:::::CCCCCCCC::::C l:::::l                    h:::::h                                                        t:::::t           !:::!          ")
+print("           C:::::C       CCCCCC  l::::l    aaaaaaaaaaaaa    h::::h hhhhh           ooooooooooo       ooooooooooo    ttttttt:::::ttttttt     !:::!          ")
+print("          C:::::C                l::::l    a::::::::::::a   h::::hh:::::hhh      oo:::::::::::oo   oo:::::::::::oo  t:::::::::::::::::t     !:::!          ")
+print("          C:::::C                l::::l    aaaaaaaaa:::::a  h::::::::::::::hh   o:::::::::::::::o o:::::::::::::::o t:::::::::::::::::t     !:::!          ")
+print("          C:::::C                l::::l             a::::a  h:::::::hhh::::::h  o:::::ooooo:::::o o:::::ooooo:::::o tttttt:::::::tttttt     !:::!          ")
+print("          C:::::C                l::::l      aaaaaaa:::::a  h::::::h   h::::::h o::::o     o::::o o::::o     o::::o       t:::::t           !:::!          ")
+print("          C:::::C                l::::l    aa::::::::::::a  h:::::h     h:::::h o::::o     o::::o o::::o     o::::o       t:::::t           !:::!          ")
+print("          C:::::C                l::::l   a::::aaaa::::::a  h:::::h     h:::::h o::::o     o::::o o::::o     o::::o       t:::::t           !!:!!          ")
+print("           C:::::C       CCCCCC  l::::l  a::::a    a:::::a  h:::::h     h:::::h o::::o     o::::o o::::o     o::::o       t:::::t    tttttt  !!!           ")
+print("            C:::::CCCCCCCC::::C l::::::l a::::a    a:::::a  h:::::h     h:::::h o:::::ooooo:::::o o:::::ooooo:::::o       t::::::tttt:::::t                ")
+print("             CC:::::::::::::::C l::::::l a:::::aaaa::::::a  h:::::h     h:::::h o:::::::::::::::o o:::::::::::::::o       tt::::::::::::::t  !!!           ")
+print("               CCC::::::::::::C l::::::l  a::::::::::aa:::a h:::::h     h:::::h  oo:::::::::::oo   oo:::::::::::oo          tt:::::::::::tt !!:!!          ")
+print("                  CCCCCCCCCCCCC llllllll   aaaaaaaaaa  aaaa hhhhhhh     hhhhhhh    ooooooooooo       ooooooooooo              ttttttttttt    !!!           ")
 print("\n")
-print("{:^135}".format("by Andrew Gregorovic"))
+print("{:^155}".format("by Andrew Gregorovic"))
 print("\n\n\n\n")
-print("{:^135}".format("Enter any key to continue\n"))
-input("{:^67}".format(""))
+print("{:^155}".format("Enter any key to continue\n"))
+input("{:^77}".format(""))
+
+# clear screen and display the instructions/rules
+os.system('cls' if os.name == 'nt' else 'clear')
+print("\n\n\n")
+print("{:^155}".format("Clahoot!\n\n"))
+print("""Clahoot! is a multiple choice quiz game created as a terminal application based on the online Kahoot! game.
+It has been adapted to a single player experience with a leaderboard rather than an online multiplayer game and follows a similar scoring style to Kahoot!.\n\n""")
+print("{:^155}".format("Instructions\n\n"))
+print("""The app will choose 10 random questions from a pool of potential questions for the topic you select.
+To input your answer, type the letter corresponding to the choice you would like to select and press 'Enter'.
+After each question you will be given time to review the question and answer before moving on. This screen will also display your current score.
+You will be awarded points for each correct answer. You will receive additional points for faster answers and maintaining an answer streak.
+
+At the end of the quiz, your final score will be displayed along with how many questions you answered correctly.
+You will also have option to view the current leaderboard.
+\n\n\n\n""")
+print("{:^155}".format("Enter any key to continue to topic selection"))
+input("{:^77}".format(""))
 
 # clear screen and ask user to select topic
 os.system('cls' if os.name == 'nt' else 'clear')
@@ -313,25 +132,19 @@ while selected_topic not in range(1,4):
     try:
         selected_topic = int(input("What topic would you like to be quizzed on? (Please enter the topic number)\n"))
         if selected_topic == 1:
-            current_quiz = randomizer(test_dict)
+            current_quiz = randomizer(qd.test_dict)
         elif selected_topic == 2:
-            current_quiz = randomizer(test_dict)
+            current_quiz = randomizer(qd.test_dict)
         elif selected_topic == 3:
-            current_quiz = randomizer(test_dict)
+            current_quiz = randomizer(qd.test_dict)
         else:
             print("\nSorry, that isn't a valid selection.\n")
-    except:
+    except Exception:
         print("\nSorry, that isn't a valid selection.\n")
-        
+
 # ask user to enter name
-# display rules by entering "r" during topic selection or name input
+
 # call randomizer() to get data for current quiz
-if selected_topic == "1":
-    current_quiz = randomizer(test_dict)
-elif selected_topic == "2":
-    current_quiz = randomizer(test_dict)
-else:
-    current_quiz = randomizer(test_dict)
 
 print(current_quiz)
 # display question 1
