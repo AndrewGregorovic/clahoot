@@ -272,8 +272,30 @@ test_dict = {
             }
 }
 
-# welcome/menu screen
-print("CLahoot!")
+# welcome screen
+print("\n\n\n")
+print("        CCCCCCCCCCCCC lllllll                    hhhhhhh                                                           tttt            !!! ")
+print("     CCC::::::::::::C l:::::l                    h:::::h                                                        ttt:::t           !!:!!")
+print("   CC:::::::::::::::C l:::::l                    h:::::h                                                        t:::::t           !:::!")
+print("  C:::::CCCCCCCC::::C l:::::l                    h:::::h                                                        t:::::t           !:::!")
+print(" C:::::C       CCCCCC  l::::l    aaaaaaaaaaaaa    h::::h hhhhh           ooooooooooo       ooooooooooo    ttttttt:::::ttttttt     !:::!")
+print("C:::::C                l::::l    a::::::::::::a   h::::hh:::::hhh      oo:::::::::::oo   oo:::::::::::oo  t:::::::::::::::::t     !:::!")
+print("C:::::C                l::::l    aaaaaaaaa:::::a  h::::::::::::::hh   o:::::::::::::::o o:::::::::::::::o t:::::::::::::::::t     !:::!")
+print("C:::::C                l::::l             a::::a  h:::::::hhh::::::h  o:::::ooooo:::::o o:::::ooooo:::::o tttttt:::::::tttttt     !:::!")
+print("C:::::C                l::::l      aaaaaaa:::::a  h::::::h   h::::::h o::::o     o::::o o::::o     o::::o       t:::::t           !:::!")
+print("C:::::C                l::::l    aa::::::::::::a  h:::::h     h:::::h o::::o     o::::o o::::o     o::::o       t:::::t           !:::!")
+print("C:::::C                l::::l   a::::aaaa::::::a  h:::::h     h:::::h o::::o     o::::o o::::o     o::::o       t:::::t           !!:!!")
+print(" C:::::C       CCCCCC  l::::l  a::::a    a:::::a  h:::::h     h:::::h o::::o     o::::o o::::o     o::::o       t:::::t    tttttt  !!! ")
+print("  C:::::CCCCCCCC::::C l::::::l a::::a    a:::::a  h:::::h     h:::::h o:::::ooooo:::::o o:::::ooooo:::::o       t::::::tttt:::::t      ")
+print("   CC:::::::::::::::C l::::::l a:::::aaaa::::::a  h:::::h     h:::::h o:::::::::::::::o o:::::::::::::::o       tt::::::::::::::t  !!! ")
+print("     CCC::::::::::::C l::::::l  a::::::::::aa:::a h:::::h     h:::::h  oo:::::::::::oo   oo:::::::::::oo          tt:::::::::::tt !!:!!")
+print("        CCCCCCCCCCCCC llllllll   aaaaaaaaaa  aaaa hhhhhhh     hhhhhhh    ooooooooooo       ooooooooooo              ttttttttttt    !!! ")
+print("\n")
+print("{:^135}".format("by Andrew Gregorovic"))
+print("\n\n\n\n")
+print("{:^135}".format("Enter any key to continue\n"))
+input("{:^67}".format(""))
+
 # ask user to select topic
 print("""There are 3 topics available for you to choose between,
 1) Topic 1
