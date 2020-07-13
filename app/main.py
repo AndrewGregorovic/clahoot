@@ -1,3 +1,4 @@
+import os
 import random
 import time
 
@@ -296,12 +297,32 @@ print("\n\n\n\n")
 print("{:^135}".format("Enter any key to continue\n"))
 input("{:^67}".format(""))
 
-# ask user to select topic
-print("""There are 3 topics available for you to choose between,
-1) Topic 1
-2) Topic 2
-3) Topic 3\n""")
-selected_topic = input("What topic would you like to be quizzed on? (Please enter the topic number)\n")
+# clear screen and ask user to select topic
+os.system('cls' if os.name == 'nt' else 'clear')
+print("\n\n\n")
+print("""There are 3 topics available for you to choose between,\n
+    1) Capitol Cities
+    2) World Geography
+    3) World Languages""")
+print("\n")
+
+selected_topic = 0
+# repeat until user makes a valid selection
+while selected_topic not in range(1,4):
+    # try/except block to prevent the app from crashing when the user enters an invalid input
+    try:
+        selected_topic = int(input("What topic would you like to be quizzed on? (Please enter the topic number)\n"))
+        if selected_topic == 1:
+            current_quiz = randomizer(test_dict)
+        elif selected_topic == 2:
+            current_quiz = randomizer(test_dict)
+        elif selected_topic == 3:
+            current_quiz = randomizer(test_dict)
+        else:
+            print("\nSorry, that isn't a valid selection.\n")
+    except:
+        print("\nSorry, that isn't a valid selection.\n")
+        
 # ask user to enter name
 # display rules by entering "r" during topic selection or name input
 # call randomizer() to get data for current quiz
