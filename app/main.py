@@ -126,8 +126,10 @@ print("""There are 3 topics available for you to choose between,\n
 print("\n")
 
 selected_topic = 0
+
 # repeat until user makes a valid selection
 while selected_topic not in range(1,4):
+
     # try/except block to prevent the app from crashing when the user enters an invalid input
     try:
         # ask user for their selection
@@ -147,26 +149,55 @@ while selected_topic not in range(1,4):
 
 print(current_quiz)
 
+choices = ("a", "b", "c", "d")
+
 # loop through all the questions
 for i in range(0, len(current_quiz[0])):
     os.system('cls' if os.name == 'nt' else 'clear')
+
     # print the current question
-    print("\n\n\n")
+    print("\n\n")
     print(f"Question {i + 1}/{len(current_quiz[0])}\n")
     print(f"{current_quiz[0][i]}\n")
-    print(f"    a) {current_quiz[1][i]}")
-    print(f"    b) {current_quiz[2][i]}")
-    print(f"    c) {current_quiz[3][i]}")
-    print(f"    d) {current_quiz[4][i]}")
+
+    for x in range(0, len(choices)):
+                print(f"    {choices[x]}) {current_quiz[x + 1][i]}")
+    
     print("\n\n")
 
     # ask for the user's answer
-    input("Please enter your answer: ")
-# display question 1
-# ask user for answer
+    user_answer = input("Please enter your answer: ")
+
+    os.system('cls' if os.name == 'nt' else 'clear')
+    print("\n\n")
+
+    if user_answer == current_quiz[5][i]:
+        print("Well done, you answered the question", end=" ")
+        print("correctly", end="")
+        print(".")
+    else:
+        print("Good try, unfortunately you answered the question", end=" ")
+        print("incorrectly", end="")
+        print(".")
+
+    print("\n")
+    print(f"Question {i + 1}/{len(current_quiz[0])}\n")
+    print(f"{current_quiz[0][i]}\n")
+    for x in range(0, len(choices)):
+        
+        print(f"    {choices[x]}) {current_quiz[x + 1][i]}", end=" ")
+
+        if current_quiz[5][i] == choices[x]:
+            print("- Correct answer")
+        elif user_answer == choices[x] and current_quiz[5][i] != choices[x]:
+            print("- Your answer")
+        else:
+            print("")
+    
+    print("\n\n")
+    input("Press enter when ready to continue to the next question")
 # display whether user is correct or not, display correct answer and how long it took
 # call scoring for question 1
 # display updated user score and correct answer streak
-# repeat for all 10 questions
 # display leaderboard and user's final score
 # ask to play again
