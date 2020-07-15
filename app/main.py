@@ -130,6 +130,7 @@ selected_topic = 0
 while selected_topic not in range(1,4):
     # try/except block to prevent the app from crashing when the user enters an invalid input
     try:
+        # ask user for their selection
         selected_topic = int(input("What topic would you like to be quizzed on? (Please enter the topic number)\n"))
         if selected_topic == 1:
             current_quiz = randomizer(qd.test_dict)
@@ -144,9 +145,23 @@ while selected_topic not in range(1,4):
 
 # ask user to enter name
 
-# call randomizer() to get data for current quiz
-
 print(current_quiz)
+
+# loop through all the questions
+for i in range(0, len(current_quiz[0])):
+    os.system('cls' if os.name == 'nt' else 'clear')
+    # print the current question
+    print("\n\n\n")
+    print(f"Question {i + 1}/{len(current_quiz[0])}\n")
+    print(f"{current_quiz[0][i]}\n")
+    print(f"    a) {current_quiz[1][i]}")
+    print(f"    b) {current_quiz[2][i]}")
+    print(f"    c) {current_quiz[3][i]}")
+    print(f"    d) {current_quiz[4][i]}")
+    print("\n\n")
+
+    # ask for the user's answer
+    input("Please enter your answer: ")
 # display question 1
 # ask user for answer
 # display whether user is correct or not, display correct answer and how long it took
