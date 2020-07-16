@@ -264,19 +264,23 @@ for i in range(0, len(current_quiz[0])):
 
     # calls the scoring function and updates variables with the values returned
     score = scoring(current_quiz[5][i], user_answer, time_taken, current_points, total_score, total_correct, total_time, answer_streak)
-    
+    current_points = score[0]
+    total_score = score[1]
+    total_correct = score[2]
+    total_time = score[3]
+    answer_streak = score[4]
 
     print("\n\n")
-    print("You received {current_points} points for this question.\n")
-    print("Your current score is: {total_score}\n")
+    print(f"You received {current_points} points for this question.\n")
+    print(f"Your current score is: {total_score}\n")
 
     # prints out a message informing the user of the current state of their answer streak
     if answer_streak == 1:
         print("You have started an answer streak by answering this question correctly.")
     elif answer_streak > 1:
-        print("You are on a roll with an answer streak of {answer_streak}!")
+        print(f"You are on a roll with an answer streak of {answer_streak}!")
     else:
-        print("You have dropped your answer streak of {score[5]}.")
+        print(f"You have dropped your answer streak of {score[5]}.")
 
     print("\n\n")
     input("Press enter when ready to continue to the next question")
