@@ -123,7 +123,7 @@ print("                  CCCCCCCCCCCCC llllllll   aaaaaaaaaa  aaaa hhhhhhh     h
 print("\n")
 print("{:^155}".format("by Andrew Gregorovic"))
 print("\n\n\n\n")
-print("{:^155}".format("Enter any key to continue\n"))
+print("{:^155}".format("Press enter to continue\n"))
 input("{:^77}".format(""))
 
 # clear screen and display the instructions/rules
@@ -142,7 +142,7 @@ You will be awarded points for each correct answer. You will receive additional 
 At the end of the quiz, your final score will be displayed along with how many questions you answered correctly.
 You will also have the option to view the current leaderboard for the topic you selected.
 \n\n\n\n""")
-print("{:^155}".format("Enter any key to continue to topic selection"))
+print("{:^155}".format("Press enter to continue to topic selection"))
 input("{:^77}".format(""))
 
 # clear screen and ask user to select topic
@@ -188,7 +188,7 @@ while True:
         break
 
 print("\n\n\n")
-print("{:^155}".format("Enter any key when you are ready to begin the quiz"))
+print("{:^155}".format("Press enter when you are ready to begin the quiz"))
 input("{:^77}".format(""))
 
 # initialise variables that will be used during the quiz
@@ -279,11 +279,27 @@ for i in range(0, len(current_quiz[0])):
         print("You have started an answer streak by answering this question correctly.")
     elif answer_streak > 1:
         print(f"You are on a roll with an answer streak of {answer_streak}!")
+    elif answer_streak == 0 and score[5] == 0:
+        print("")
     else:
         print(f"You have dropped your answer streak of {score[5]}.")
 
+    # print a different continue message depending on if it's the last question or not
     print("\n\n")
-    input("Press enter when ready to continue to the next question")
+    if i + 1 != len(current_quiz[0]):
+        input("Press enter to continue to the next question")
+    else:
+        input("Press enter to continue to your results")
 
-# display leaderboard and user's final score
-# ask to play again
+# calculate avg time for correct answers as a fun fact to display with the results
+avg_time = total_time / total_correct
+
+# clear screen and display results
+os.system('cls' if os.name == 'nt' else 'clear')
+print("\n\n\n")
+print("{:^155}".format("Congratulations on completing the quiz!\n\n"))
+print("{:^155}".format(f"You answered {total_correct} out of {len(current_quiz[0])} questions correctly!\n"))
+print("{:^155}".format(f"Your final score is {total_score}\n\n\n"))
+print("{:^155}".format(f"Fun fact: You had an average answer speed of {avg_time:.1f} seconds for the questions that you answered correctly.\n\n\n\n"))
+print("{:^155}".format("To view the leaderboard enter 'l', otherwise would you like to take another quiz? (y/n): "))
+end_of_quiz_input = input("{:^77}".format(""))
