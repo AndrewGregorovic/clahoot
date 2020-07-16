@@ -102,6 +102,7 @@ def countdown():
         countdown_length -= 1
         time.sleep(1)
 
+
 # welcome screen
 print("\n\n\n")
 print("                  CCCCCCCCCCCCC lllllll                    hhhhhhh                                                           tttt            !!!           ")
@@ -208,7 +209,7 @@ while True:
     choices = ("a", "b", "c", "d")
 
     # loop through all the questions
-    for i in range(0, len(current_quiz[0])):
+    for i in range(9, len(current_quiz[0])):
         os.system('cls' if os.name == 'nt' else 'clear')
 
         # prints the current question number and a countdown to it being displayed, also starts a timer when the countdown ends
@@ -312,18 +313,42 @@ while True:
     print("{:^155}".format(f"You answered {total_correct} out of {len(current_quiz[0])} questions correctly!\n"))
     print("{:^155}".format(f"Your final score is {total_score}\n\n\n"))
     print("{:^155}".format(f"Fun fact: You had an average answer speed of {avg_time:.1f} seconds for the questions that you answered correctly.\n\n\n\n"))
-    print("{:^155}".format("To view the leaderboard enter 'l', otherwise would you like to take another quiz? (y/n): "))
-    end_of_quiz_input = input("{:^77}".format("")).strip().lower()
 
     # checks for a valid input, repeats asking user what they would like to do until one is given
-    while end_of_quiz_input != "l" and end_of_quiz_input != "y" and end_of_quiz_input != "n":
-        print("{:^155}".format("Sorry that isn't a valid option, please try again.\n\n"))
+    while True:
         print("{:^155}".format("To view the leaderboard enter 'l', otherwise would you like to take another quiz? (y/n): "))
         end_of_quiz_input = input("{:^77}".format("")).strip().lower()
+        if end_of_quiz_input != "l" and end_of_quiz_input != "y" and end_of_quiz_input != "n":
+            print("")
+            print("{:^155}".format("Sorry that isn't a valid option, please try again.\n"))
+        else:
+            break
 
+    # first checks if user selected view leaderboard
     if end_of_quiz_input == "l":
         leaderboard()
-    elif end_of_quiz_input == "y":
+
+        # need to get user input again, since we're at the leaderboard the print message needs to be different
+        # also need to print another message if the user tries to input 'l' again
+        while True:
+            print("\n")
+            print("{:^155}".format("Would you like to take another quiz? (y/n): "))
+
+            # the user isn't allowed to input 'l' again and the only other inputs allowed are 'y' and 'n' which we haven't checked yet
+            # so we can save the input to the same variable as before
+            end_of_quiz_input = input("{:^77}".format("")).strip().lower()
+            if end_of_quiz_input != "l" and end_of_quiz_input != "y" and end_of_quiz_input != "n":
+                print("")
+                print("{:^155}".format("Sorry that isn't a valid option, please try again.\n"))
+            elif end_of_quiz_input == "l":
+                print("")
+                print("{:^155}".format("You are already viewing the leaderboard.\n"))
+            else:
+                break
+
+    # check user input to determine if the app stops or continues again, clear the screen if we continue
+    if end_of_quiz_input == "y":
+        os.system('cls' if os.name == 'nt' else 'clear')
         continue
-    elif end_of_quiz_input == "n":
+    else:
         break
