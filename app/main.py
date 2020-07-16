@@ -176,12 +176,13 @@ choices = ("a", "b", "c", "d")
 for i in range(0, len(current_quiz[0])):
     os.system('cls' if os.name == 'nt' else 'clear')
 
-    # prints the current question number and a countdown to it being displayed which corresponds to the timer starting
+    # prints the current question number and a countdown to it being displayed, also starts a timer when the countdown ends
     print("\n\n\n")
     print(f"Question {i + 1}/{len(current_quiz[0])}")
     print("\n")
     countdown()
     os.system('cls' if os.name == 'nt' else 'clear')
+    start_time = time.time()
 
     # print the current question
     print("\n\n\n")
@@ -191,7 +192,7 @@ for i in range(0, len(current_quiz[0])):
     # iterates over the choices tuple to print each one out
     for x in range(0, len(choices)):
         print(f"    {choices[x]}) {current_quiz[x + 1][i]}")
-    
+
     print("\n\n")
 
     # ask for the user's answer and applies necessary string methods to check if it's a valid answer, repeat until a valid answer is given
@@ -203,6 +204,9 @@ for i in range(0, len(current_quiz[0])):
         else:
             print("Sorry that is not one of the 4 choices, please try again.")
 
+    # stop the timer when user enters a valid answer and find the difference to get time taken
+    end_time = time.time()
+    time_taken = round(end_time - start_time, 1)
     os.system('cls' if os.name == 'nt' else 'clear')
     print("\n\n\n")
 
@@ -224,13 +228,23 @@ for i in range(0, len(current_quiz[0])):
     # compares user_answer to the answer key and prints whether they answered correctly or not
     if user_answer == current_quiz[5][i]:
         print("Well done, you answered the question", end=" ")
-        print("correctly", end="")
-        print(".")
+        print("correctly", end=" ")
+        print(f"in {time_taken} seconds.")
     else:
         print("Good try, unfortunately you answered the question", end=" ")
-        print("incorrectly", end="")
-        print(".")
-    
+        print("incorrectly", end=" ")
+        print(f"in {time_taken} seconds.")
+
+    score = scoring(current_quiz[5][i], user_answer, time_taken)
+
+    print("\n\n")
+    print("You received {points} points for this question.\n")
+    print("Your current score is: {total_score}\n")
+
+    print("You have started an answer streak by answering this question correctly.")
+    print("You are on a roll with an answer streak of {answer_streak}!")
+    print("You have dropped your answer streak of {answer_streak}.")
+
     print("\n\n")
     input("Press enter when ready to continue to the next question")
 # display whether user is correct or not, display correct answer and how long it took
