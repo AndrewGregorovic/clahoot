@@ -73,6 +73,13 @@ def leaderboard():
     # display leaderboard
     pass
 
+# countdown function to be used before each question is displayed
+def countdown():
+    countdown_length = 5
+    while countdown_length > 0:
+        print(f"00:0{countdown_length}", end="\r")
+        countdown_length -= 1
+        time.sleep(1)
 
 # welcome screen
 print("\n\n\n")
@@ -107,11 +114,12 @@ It has been adapted to a single player experience with a leaderboard rather than
 print("{:^155}".format("Instructions\n\n"))
 print("""The app will choose 10 random questions from a pool of potential questions for the topic you select.
 To input your answer, type the letter corresponding to the choice you would like to select and press 'Enter'.
-After each question you will be given time to review the question and answer before moving on. This screen will also display your current score.
+Before each question is displayed there will be a short timer. Once it ends, a hidden timer will start to track how quickly you answer the question.
+After each question you will be given time to review the question and answer before moving on. This screen will also display your current score and speed.
 You will be awarded points for each correct answer. You will receive additional points for faster answers and maintaining an answer streak.
 
 At the end of the quiz, your final score will be displayed along with how many questions you answered correctly.
-You will also have option to view the current leaderboard.
+You will also have the option to view the current leaderboard for the topic you selected.
 \n\n\n\n""")
 print("{:^155}".format("Enter any key to continue to topic selection"))
 input("{:^77}".format(""))
@@ -168,9 +176,16 @@ choices = ("a", "b", "c", "d")
 for i in range(0, len(current_quiz[0])):
     os.system('cls' if os.name == 'nt' else 'clear')
 
+    # prints the current question number and a countdown to it being displayed which corresponds to the timer starting
+    print("\n\n\n")
+    print(f"Question {i + 1}/{len(current_quiz[0])}")
+    print("\n")
+    countdown()
+    os.system('cls' if os.name == 'nt' else 'clear')
+
     # print the current question
-    print("\n\n")
-    print(f"Question {i + 1}/{len(current_quiz[0])}\n")
+    print("\n\n\n")
+    print(f"Question {i + 1}/{len(current_quiz[0])}\n\n")
     print(f"{current_quiz[0][i]}\n")
 
     # iterates over the choices tuple to print each one out
@@ -189,10 +204,10 @@ for i in range(0, len(current_quiz[0])):
             print("Sorry that is not one of the 4 choices, please try again.")
 
     os.system('cls' if os.name == 'nt' else 'clear')
-    print("\n\n")
+    print("\n\n\n")
 
     # reprints the question for review, showing what the correct answer was and what answer the user gave
-    print(f"Question {i + 1}/{len(current_quiz[0])}\n")
+    print(f"Question {i + 1}/{len(current_quiz[0])}\n\n")
     print(f"{current_quiz[0][i]}\n")
     for x in range(0, len(choices)):
         print(f"    {choices[x]}) {current_quiz[x + 1][i]}", end=" ")
@@ -204,7 +219,7 @@ for i in range(0, len(current_quiz[0])):
         else:
             print("")
 
-    print("\n")
+    print("\n\n")
 
     # compares user_answer to the answer key and prints whether they answered correctly or not
     if user_answer == current_quiz[5][i]:
