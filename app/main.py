@@ -145,161 +145,185 @@ You will also have the option to view the current leaderboard for the topic you 
 print("{:^155}".format("Press enter to continue to topic selection"))
 input("{:^77}".format(""))
 
-# clear screen and ask user to select topic
+# clear screen and ask user to enter name, repeat until they enter a valid name that only contains letters of the alphabet
 os.system('cls' if os.name == 'nt' else 'clear')
 print("\n\n\n")
-print("""There are 3 topics available for you to choose between,\n
-    1) Capitol Cities
-    2) World Geography
-    3) World Languages""")
-print("\n")
-
-# repeat until user makes a valid selection
 while True:
+    user_name = input("Please enter your name (must be 3-10 characters):\n").strip()
 
-    # try/except block to prevent the app from crashing when the user enters an invalid input
-    try:
-        # ask user for their selection
-        selected_topic = int(input("What topic would you like to be quizzed on? (Please enter the topic number)\n"))
-        if selected_topic == 1:
-            current_quiz = randomizer(qd.test_dict)
-            break
-        elif selected_topic == 2:
-            current_quiz = randomizer(qd.test_dict)
-            break
-        elif selected_topic == 3:
-            current_quiz = randomizer(qd.test_dict)
-            break
-        else:
-            print("\nSorry, that isn't a valid selection.\n")
-    except Exception:
-        print("\nSorry, that isn't a valid selection.\n")
-
-print("\n\n")
-
-# ask user to enter name, repeat until they enter a valid name that only contains letters of the alphabet
-while True:
-    user_name = input("Please enter your name (only use letters, special characters and numbers are not allowed):\n")
-
-    # checks that user_name only contains letters of the alphabet
-    if user_name.isalpha() == False:
-        print("Sorry that is not a valid name.")
+    # checks that user_name is a valid length and only contains letters of the alphabet
+    if len(user_name) < 3 or len(user_name) > 10:
+        print("\nSorry that is not a valid name, remember it needs to be 3-10 characters long.\n")
+    elif user_name.isalpha() == False:
+        print("\nSorry that is not a valid name, it can't contain numbers or any special characters.\n")
     else:
+        print(f"\n\nWelcome {user_name}!")
         break
 
-print("\n\n\n")
-print("{:^155}".format("Press enter when you are ready to begin the quiz"))
-input("{:^77}".format(""))
+# main application loop, allows user to take the quiz again without having to enter their name again but lets them choose a different topic
+while True:
 
-# initialise variables that will be used during the quiz
-answer_streak = 0
-current_points = 0
-total_score = 0
-total_correct = 0
-total_time = 0
-choices = ("a", "b", "c", "d")
-
-# loop through all the questions
-for i in range(0, len(current_quiz[0])):
-    os.system('cls' if os.name == 'nt' else 'clear')
-
-    # prints the current question number and a countdown to it being displayed, also starts a timer when the countdown ends
-    print("\n\n\n")
-    print(f"Question {i + 1}/{len(current_quiz[0])}")
+    # ask user to select a quiz topic
+    print("\n\n")
+    print("""Before starting there are 3 topics available for you to choose between,\n
+        1) Capitol Cities
+        2) World Geography
+        3) World Languages""")
     print("\n")
-    countdown()
-    os.system('cls' if os.name == 'nt' else 'clear')
-    start_time = time.time()
 
-    # print the current question
-    print("\n\n\n")
-    print(f"Question {i + 1}/{len(current_quiz[0])}\n\n")
-    print(f"{current_quiz[0][i]}\n")
-
-    # iterates over the choices tuple to print each one out
-    for x in range(0, len(choices)):
-        print(f"    {choices[x]}) {current_quiz[x + 1][i]}")
-
-    print("\n\n")
-
-    # ask for the user's answer and applies necessary string methods to check if it's a valid answer, repeat until a valid answer is given
+    # repeat until user makes a valid selection
     while True:
-        user_answer = input("Enter your answer: ")
-        user_answer = user_answer.strip().lower()
-        if user_answer in choices:
-            break
-        else:
-            print("Sorry that is not one of the 4 choices, please try again.")
 
-    # stop the timer when user enters a valid answer and find the difference to get time taken
-    end_time = time.time()
-    time_taken = end_time - start_time
+        # try/except block to prevent the app from crashing when the user enters an invalid input
+        try:
+            # ask user for their selection
+            selected_topic = int(input("What topic would you like to be quizzed on? (Please enter the topic number)\n").strip())
+            if selected_topic == 1:
+                current_quiz = randomizer(qd.test_dict)
+                quiz_topic = "Capitol Cities"
+                break
+            elif selected_topic == 2:
+                current_quiz = randomizer(qd.test_dict)
+                quiz_topic = "World Geography"
+                break
+            elif selected_topic == 3:
+                current_quiz = randomizer(qd.test_dict)
+                current_quiz = "World Languages"
+                break
+            else:
+                print("\nSorry, that isn't a valid selection.\n")
+        except Exception:
+            print("\nSorry, that isn't a valid selection.\n")
+
+    print("\n\n\n")
+    input("Press enter when you are ready to begin the quiz")
+
+
+    # initialise variables that will be used during the quiz
+    answer_streak = 0
+    current_points = 0
+    total_score = 0
+    total_correct = 0
+    total_time = 0
+    choices = ("a", "b", "c", "d")
+
+    # loop through all the questions
+    for i in range(0, len(current_quiz[0])):
+        os.system('cls' if os.name == 'nt' else 'clear')
+
+        # prints the current question number and a countdown to it being displayed, also starts a timer when the countdown ends
+        print("\n\n\n")
+        print(f"Question {i + 1}/{len(current_quiz[0])}")
+        print("\n")
+        countdown()
+        os.system('cls' if os.name == 'nt' else 'clear')
+        start_time = time.time()
+
+        # print the current question
+        print("\n\n\n")
+        print(f"Question {i + 1}/{len(current_quiz[0])}\n\n")
+        print(f"{current_quiz[0][i]}\n")
+
+        # iterates over the choices tuple to print each one out
+        for x in range(0, len(choices)):
+            print(f"    {choices[x]}) {current_quiz[x + 1][i]}")
+
+        print("\n\n")
+
+        # ask for the user's answer and applies necessary string methods to check if it's a valid answer, repeat until a valid answer is given
+        while True:
+            user_answer = input("Enter your answer: ").strip().lower()
+            if user_answer in choices:
+                break
+            else:
+                print("Sorry that is not one of the 4 choices, please try again.")
+
+        # stop the timer when user enters a valid answer and find the difference to get time taken
+        end_time = time.time()
+        time_taken = end_time - start_time
+        os.system('cls' if os.name == 'nt' else 'clear')
+        print("\n\n\n")
+
+        # reprints the question for review, showing what the correct answer was and what answer the user gave
+        print(f"Question {i + 1}/{len(current_quiz[0])}\n\n")
+        print(f"{current_quiz[0][i]}\n")
+        for x in range(0, len(choices)):
+            print(f"    {choices[x]}) {current_quiz[x + 1][i]}", end=" ")
+
+            if current_quiz[5][i] == choices[x]:
+                print("- Correct answer")
+            elif user_answer == choices[x] and current_quiz[5][i] != choices[x]:
+                print("- Your answer")
+            else:
+                print("")
+
+        print("\n\n")
+
+        # compares user_answer to the answer key and prints whether they answered correctly or not
+        if user_answer == current_quiz[5][i]:
+            print("Well done, you answered the question", end=" ")
+            print("correctly", end=" ")
+            print(f"in {time_taken:.1f} seconds.")
+        else:
+            print("Good try, unfortunately you answered the question", end=" ")
+            print("incorrectly", end=" ")
+            print(f"in {time_taken:.1f} seconds.")
+
+        # calls the scoring function and updates variables with the values returned
+        score = scoring(current_quiz[5][i], user_answer, time_taken, current_points, total_score, total_correct, total_time, answer_streak)
+        current_points = score[0]
+        total_score = score[1]
+        total_correct = score[2]
+        total_time = score[3]
+        answer_streak = score[4]
+
+        print("\n\n")
+        print(f"You received {current_points} points for this question.\n")
+        print(f"Your current score is: {total_score}\n")
+
+        # prints out a message informing the user of the current state of their answer streak
+        if answer_streak == 1:
+            print("You have started an answer streak by answering this question correctly.")
+        elif answer_streak > 1:
+            print(f"You are on a roll with an answer streak of {answer_streak}!")
+        elif answer_streak == 0 and score[5] == 0:
+            print("")
+        else:
+            print(f"You have dropped your answer streak of {score[5]}.")
+
+        # print a different continue message depending on if it's the last question or not
+        print("\n\n")
+        if i + 1 != len(current_quiz[0]):
+            input("Press enter to continue to the next question")
+        else:
+            input("Press enter to continue to your results")
+
+    # calculate avg time for correct answers as a fun fact to display with the results
+    # uses a try/except block in the case that no questions were answered correctly as it would be trying to divide by 0
+    try:
+        avg_time = total_time / total_correct
+    except Exception:
+        avg_time = 0
+
+    # clear screen and display results
     os.system('cls' if os.name == 'nt' else 'clear')
     print("\n\n\n")
+    print("{:^155}".format("Congratulations on completing the quiz!\n\n"))
+    print("{:^155}".format(f"You answered {total_correct} out of {len(current_quiz[0])} questions correctly!\n"))
+    print("{:^155}".format(f"Your final score is {total_score}\n\n\n"))
+    print("{:^155}".format(f"Fun fact: You had an average answer speed of {avg_time:.1f} seconds for the questions that you answered correctly.\n\n\n\n"))
+    print("{:^155}".format("To view the leaderboard enter 'l', otherwise would you like to take another quiz? (y/n): "))
+    end_of_quiz_input = input("{:^77}".format("")).strip().lower()
 
-    # reprints the question for review, showing what the correct answer was and what answer the user gave
-    print(f"Question {i + 1}/{len(current_quiz[0])}\n\n")
-    print(f"{current_quiz[0][i]}\n")
-    for x in range(0, len(choices)):
-        print(f"    {choices[x]}) {current_quiz[x + 1][i]}", end=" ")
+    # checks for a valid input, repeats asking user what they would like to do until one is given
+    while end_of_quiz_input != "l" and end_of_quiz_input != "y" and end_of_quiz_input != "n":
+        print("{:^155}".format("Sorry that isn't a valid option, please try again.\n\n"))
+        print("{:^155}".format("To view the leaderboard enter 'l', otherwise would you like to take another quiz? (y/n): "))
+        end_of_quiz_input = input("{:^77}".format("")).strip().lower()
 
-        if current_quiz[5][i] == choices[x]:
-            print("- Correct answer")
-        elif user_answer == choices[x] and current_quiz[5][i] != choices[x]:
-            print("- Your answer")
-        else:
-            print("")
-
-    print("\n\n")
-
-    # compares user_answer to the answer key and prints whether they answered correctly or not
-    if user_answer == current_quiz[5][i]:
-        print("Well done, you answered the question", end=" ")
-        print("correctly", end=" ")
-        print(f"in {time_taken:.1f} seconds.")
-    else:
-        print("Good try, unfortunately you answered the question", end=" ")
-        print("incorrectly", end=" ")
-        print(f"in {time_taken:.1f} seconds.")
-
-    # calls the scoring function and updates variables with the values returned
-    score = scoring(current_quiz[5][i], user_answer, time_taken, current_points, total_score, total_correct, total_time, answer_streak)
-    current_points = score[0]
-    total_score = score[1]
-    total_correct = score[2]
-    total_time = score[3]
-    answer_streak = score[4]
-
-    print("\n\n")
-    print(f"You received {current_points} points for this question.\n")
-    print(f"Your current score is: {total_score}\n")
-
-    # prints out a message informing the user of the current state of their answer streak
-    if answer_streak == 1:
-        print("You have started an answer streak by answering this question correctly.")
-    elif answer_streak > 1:
-        print(f"You are on a roll with an answer streak of {answer_streak}!")
-    elif answer_streak == 0 and score[5] == 0:
-        print("")
-    else:
-        print(f"You have dropped your answer streak of {score[5]}.")
-
-    # print a different continue message depending on if it's the last question or not
-    print("\n\n")
-    if i + 1 != len(current_quiz[0]):
-        input("Press enter to continue to the next question")
-    else:
-        input("Press enter to continue to your results")
-
-# calculate avg time for correct answers as a fun fact to display with the results
-avg_time = total_time / total_correct
-
-# clear screen and display results
-os.system('cls' if os.name == 'nt' else 'clear')
-print("\n\n\n")
-print("{:^155}".format("Congratulations on completing the quiz!\n\n"))
-print("{:^155}".format(f"You answered {total_correct} out of {len(current_quiz[0])} questions correctly!\n"))
-print("{:^155}".format(f"Your final score is {total_score}\n\n\n"))
-print("{:^155}".format(f"Fun fact: You had an average answer speed of {avg_time:.1f} seconds for the questions that you answered correctly.\n\n\n\n"))
-print("{:^155}".format("To view the leaderboard enter 'l', otherwise would you like to take another quiz? (y/n): "))
-end_of_quiz_input = input("{:^77}".format(""))
+    if end_of_quiz_input == "l":
+        leaderboard()
+    elif end_of_quiz_input == "y":
+        continue
+    elif end_of_quiz_input == "n":
+        break
