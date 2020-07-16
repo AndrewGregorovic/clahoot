@@ -125,10 +125,8 @@ print("""There are 3 topics available for you to choose between,\n
     3) World Languages""")
 print("\n")
 
-selected_topic = 0
-
 # repeat until user makes a valid selection
-while selected_topic not in range(1,4):
+while True:
 
     # try/except block to prevent the app from crashing when the user enters an invalid input
     try:
@@ -136,18 +134,33 @@ while selected_topic not in range(1,4):
         selected_topic = int(input("What topic would you like to be quizzed on? (Please enter the topic number)\n"))
         if selected_topic == 1:
             current_quiz = randomizer(qd.test_dict)
+            break
         elif selected_topic == 2:
             current_quiz = randomizer(qd.test_dict)
+            break
         elif selected_topic == 3:
             current_quiz = randomizer(qd.test_dict)
+            break
         else:
             print("\nSorry, that isn't a valid selection.\n")
     except Exception:
         print("\nSorry, that isn't a valid selection.\n")
 
-# ask user to enter name
+print("\n\n")
 
-print(current_quiz)
+# ask user to enter name, repeat until they enter a valid name that only contains letters of the alphabet
+while True:
+    user_name = input("Please enter your name (only use letters, special characters and numbers are not allowed):\n")
+
+    # checks that user_name only contains letters of the alphabet
+    if user_name.isalpha() == False:
+        print("Sorry that is not a valid name.")
+    else:
+        break
+
+print("\n\n\n")
+print("{:^155}".format("Enter any key when you are ready to begin the quiz"))
+input("{:^77}".format(""))
 
 choices = ("a", "b", "c", "d")
 
@@ -160,31 +173,28 @@ for i in range(0, len(current_quiz[0])):
     print(f"Question {i + 1}/{len(current_quiz[0])}\n")
     print(f"{current_quiz[0][i]}\n")
 
+    # iterates over the choices tuple to print each one out
     for x in range(0, len(choices)):
-                print(f"    {choices[x]}) {current_quiz[x + 1][i]}")
+        print(f"    {choices[x]}) {current_quiz[x + 1][i]}")
     
     print("\n\n")
 
-    # ask for the user's answer
-    user_answer = input("Please enter your answer: ")
+    # ask for the user's answer and applies necessary string methods to check if it's a valid answer, repeat until a valid answer is given
+    while True:
+        user_answer = input("Enter your answer: ")
+        user_answer = user_answer.strip().lower()
+        if user_answer in choices:
+            break
+        else:
+            print("Sorry that is not one of the 4 choices, please try again.")
 
     os.system('cls' if os.name == 'nt' else 'clear')
     print("\n\n")
 
-    if user_answer == current_quiz[5][i]:
-        print("Well done, you answered the question", end=" ")
-        print("correctly", end="")
-        print(".")
-    else:
-        print("Good try, unfortunately you answered the question", end=" ")
-        print("incorrectly", end="")
-        print(".")
-
-    print("\n")
+    # reprints the question for review, showing what the correct answer was and what answer the user gave
     print(f"Question {i + 1}/{len(current_quiz[0])}\n")
     print(f"{current_quiz[0][i]}\n")
     for x in range(0, len(choices)):
-        
         print(f"    {choices[x]}) {current_quiz[x + 1][i]}", end=" ")
 
         if current_quiz[5][i] == choices[x]:
@@ -193,6 +203,18 @@ for i in range(0, len(current_quiz[0])):
             print("- Your answer")
         else:
             print("")
+
+    print("\n")
+
+    # compares user_answer to the answer key and prints whether they answered correctly or not
+    if user_answer == current_quiz[5][i]:
+        print("Well done, you answered the question", end=" ")
+        print("correctly", end="")
+        print(".")
+    else:
+        print("Good try, unfortunately you answered the question", end=" ")
+        print("incorrectly", end="")
+        print(".")
     
     print("\n\n")
     input("Press enter when ready to continue to the next question")
