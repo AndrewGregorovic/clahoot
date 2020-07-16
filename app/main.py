@@ -6,7 +6,8 @@ import question_dictionaries as qd
 
 # takes the question dictionary for the selected topic and randomly picks 10 questions and 4 choices for each
 # returns a list of lists containing the questions, choices and the answer key
-def randomizer(question_dict, number_of_questions=10):
+def randomizer(question_dict):
+    number_of_questions = 10
 
     # creates individual empty lists that will be used to hold the corresponding random selections
     question_list = []
@@ -19,21 +20,21 @@ def randomizer(question_dict, number_of_questions=10):
     # picks 10 random questions from the dictionary passed to the function
     random_questions = (random.sample(list(question_dict), k=number_of_questions))
 
-    for i in random_questions:
+    for question in random_questions:
         # picks 4 of the 5 question choices for each question that has been randomly picked
-        random_choices = random.sample(list(question_dict[i]["choices"]), k=4)
+        random_choices = random.sample(list(question_dict[question]["choices"]), k=4)
 
         # adds the appropriate values to the lists that will hold the current quiz data
-        question_list.append(question_dict[i]["question"])
-        choice_a_list.append(question_dict[i]["choices"][random_choices[0]])
-        choice_b_list.append(question_dict[i]["choices"][random_choices[1]])
-        choice_c_list.append(question_dict[i]["choices"][random_choices[2]])
+        question_list.append(question_dict[question]["question"])
+        choice_a_list.append(question_dict[question]["choices"][random_choices[0]])
+        choice_b_list.append(question_dict[question]["choices"][random_choices[1]])
+        choice_c_list.append(question_dict[question]["choices"][random_choices[2]])
 
         # ensures that the answer will always be one of the choices, if it wasn't picked randomly it's assigned to the "d" choice for the question
         if "answer" not in random_choices:
-            choice_d_list.append(question_dict[i]["choices"]["answer"])
+            choice_d_list.append(question_dict[question]["choices"]["answer"])
         else:
-            choice_d_list.append(question_dict[i]["choices"][random_choices[3]])
+            choice_d_list.append(question_dict[question]["choices"][random_choices[3]])
 
     # once the list of choices for each question is populated, iterate over the lists to determine which choice is the answer and create the answer key
     for i in range(0, len(random_questions)):
@@ -47,20 +48,40 @@ def randomizer(question_dict, number_of_questions=10):
             answer_key.append("d")
         else:
             answer_key.append("answer not found")
-    
+
     # returns a list of lists which contains all the required values for the current quiz
     return [question_list, choice_a_list, choice_b_list, choice_c_list, choice_d_list, answer_key]
 
 
 # using the time taken to answer the question and if the user is correct,
 # calculates the user's points for the current question and returns the value
-def scoring():
-    # 100 pts for correct answer, up to another 100 pts for answering quickly (0 additional pts at 30 secs)
-    # keep track of correct answers in a row and use to multiply total pts for question by the number of
-    # correct answers in a row
-    # i.e. 3rd correct answer in a row, answered in 15 secs gives 100 + 100 * (15/30) * 1.3 (.3 from 3 in a row)
-    # if user answered incorrectly reset the count of correct answers in a row and return 0
-    pass
+# to avoid using global, the function also needs to be passed all the variables that it needs to return updated values for
+def scoring(answer, user_answer, time_taken, current_points, total_score, total_correct, total_time, answer_streak):
+
+    # if user answered correctly, update all values
+    if answer == user_answer:
+        total_correct += 1
+        answer_streak += 1
+        total_time += time_taken
+
+        # 30 seconds is the cut off for additional points for speed
+        # 100 pts for correct answer, up to another 100 pts determined by speed, all multiplied by 1.x where x is answer streak - 1
+        if time_taken < 30:
+            current_points = int(((100 + 100 * ((30 - time_taken) / 30))) * (1 + ((answer_streak - 1) / 10)))
+        else:
+            current_points = int(100 * (1 + ((answer_streak - 1) / 10)))
+        total_score += current_points
+
+        # returns a list of the updated values
+        return [current_points, total_score, total_correct, total_time, answer_streak]
+
+    # if user answered incorrectly, need to reset the answer streak to 0 and return 0 pts for the question
+    # return an additional value for the previous answer streak so that it can be displayed in a print statement
+    else:
+        previous_answer_streak = answer_streak
+        answer_streak = 0
+        current_points = 0
+        return [current_points, total_score, total_correct, total_time, answer_streak, previous_answer_streak]
 
 
 # reads and saves the leaderboard information to a separate text file and displays the leaderboard at the end of the quiz
@@ -114,7 +135,7 @@ It has been adapted to a single player experience with a leaderboard rather than
 print("{:^155}".format("Instructions\n\n"))
 print("""The app will choose 10 random questions from a pool of potential questions for the topic you select.
 To input your answer, type the letter corresponding to the choice you would like to select and press 'Enter'.
-Before each question is displayed there will be a short timer. Once it ends, a hidden timer will start to track how quickly you answer the question.
+Before each question is displayed there will be a short countdown. Once it ends, a hidden timer will start to track how quickly you answer the question.
 After each question you will be given time to review the question and answer before moving on. This screen will also display your current score and speed.
 You will be awarded points for each correct answer. You will receive additional points for faster answers and maintaining an answer streak.
 
@@ -170,6 +191,12 @@ print("\n\n\n")
 print("{:^155}".format("Enter any key when you are ready to begin the quiz"))
 input("{:^77}".format(""))
 
+# initialise variables that will be used during the quiz
+answer_streak = 0
+current_points = 0
+total_score = 0
+total_correct = 0
+total_time = 0
 choices = ("a", "b", "c", "d")
 
 # loop through all the questions
@@ -206,7 +233,7 @@ for i in range(0, len(current_quiz[0])):
 
     # stop the timer when user enters a valid answer and find the difference to get time taken
     end_time = time.time()
-    time_taken = round(end_time - start_time, 1)
+    time_taken = end_time - start_time
     os.system('cls' if os.name == 'nt' else 'clear')
     print("\n\n\n")
 
@@ -229,26 +256,30 @@ for i in range(0, len(current_quiz[0])):
     if user_answer == current_quiz[5][i]:
         print("Well done, you answered the question", end=" ")
         print("correctly", end=" ")
-        print(f"in {time_taken} seconds.")
+        print(f"in {time_taken:.1f} seconds.")
     else:
         print("Good try, unfortunately you answered the question", end=" ")
         print("incorrectly", end=" ")
-        print(f"in {time_taken} seconds.")
+        print(f"in {time_taken:.1f} seconds.")
 
-    score = scoring(current_quiz[5][i], user_answer, time_taken)
+    # calls the scoring function and updates variables with the values returned
+    score = scoring(current_quiz[5][i], user_answer, time_taken, current_points, total_score, total_correct, total_time, answer_streak)
+    
 
     print("\n\n")
-    print("You received {points} points for this question.\n")
+    print("You received {current_points} points for this question.\n")
     print("Your current score is: {total_score}\n")
 
-    print("You have started an answer streak by answering this question correctly.")
-    print("You are on a roll with an answer streak of {answer_streak}!")
-    print("You have dropped your answer streak of {answer_streak}.")
+    # prints out a message informing the user of the current state of their answer streak
+    if answer_streak == 1:
+        print("You have started an answer streak by answering this question correctly.")
+    elif answer_streak > 1:
+        print("You are on a roll with an answer streak of {answer_streak}!")
+    else:
+        print("You have dropped your answer streak of {score[5]}.")
 
     print("\n\n")
     input("Press enter when ready to continue to the next question")
-# display whether user is correct or not, display correct answer and how long it took
-# call scoring for question 1
-# display updated user score and correct answer streak
+
 # display leaderboard and user's final score
 # ask to play again
