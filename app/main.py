@@ -59,13 +59,16 @@ def randomizer(question_dict):
 # using the time taken to answer the question and if the user is correct,
 # calculates the user's points for the current question and returns the value
 # to avoid using global, the function also needs to be passed all the variables that it needs to return updated values for
-def scoring(answer, user_answer, time_taken, current_points, total_score, total_correct, total_time, answer_streak):
+def scoring(answer, user_answer, time_taken, current_points, total_score, total_correct, total_time, answer_streak, highest_streak):
 
     # if user answered correctly, update all values
     if answer == user_answer:
         total_correct += 1
         answer_streak += 1
         total_time += time_taken
+
+        if highest_streak <= answer_streak:
+            highest_streak = answer_streak
 
         # 30 seconds is the cut off for additional points for speed
         # 100 pts for correct answer, up to another 100 pts determined by speed, all multiplied by 1.x where x is answer streak - 1
@@ -76,7 +79,7 @@ def scoring(answer, user_answer, time_taken, current_points, total_score, total_
         total_score += current_points
 
         # returns a list of the updated values
-        return [current_points, total_score, total_correct, total_time, answer_streak]
+        return [current_points, total_score, total_correct, total_time, answer_streak, highest_streak]
 
     # if user answered incorrectly, need to reset the answer streak to 0 and return 0 pts for the question
     # return an additional value for the previous answer streak so that it can be displayed in a print statement
@@ -84,7 +87,7 @@ def scoring(answer, user_answer, time_taken, current_points, total_score, total_
         previous_answer_streak = answer_streak
         answer_streak = 0
         current_points = 0
-        return [current_points, total_score, total_correct, total_time, answer_streak, previous_answer_streak]
+        return [current_points, total_score, total_correct, total_time, answer_streak, highest_streak, previous_answer_streak]
 
 
 # reads and saves the leaderboard information to a separate text file and displays the leaderboard at the end of the quiz
@@ -143,6 +146,7 @@ def get_name():
 
     return user_name
 
+
 # gets user topic selection
 def get_topic(number_of_topics):
     while True:
@@ -163,6 +167,7 @@ def get_topic(number_of_topics):
             print("\nSorry, that isn't a valid selection.\n")
 
     return selected_topic
+
 
 # clear screen function
 def clear():
@@ -188,12 +193,74 @@ def countdown():
         time.sleep(1)
 
 
+# prints the topic and question number
 def print_topic_and_question_number(topic, question_number, quiz_data):
     print("\n")
     print(f"{topic}")
     print("")
     print(f"Question {i + 1}/{len(current_quiz[0])}")
     print("\n")
+
+
+# prints the question
+def print_question(question_number, quiz_data, choices):
+    print(f"{current_quiz[0][i]}\n")
+
+    # iterate over choices to print each one
+    for x in range(0, len(choices)):
+        print(f"    {choices[x]}) {current_quiz[x + 1][i]}")
+
+    print("\n\n")
+
+# gets users answer
+def get_user_answer(choices):
+    while True:
+        # sanitises user input so that it can be compared to valid inputs
+        user_answer = input("Enter your answer: ").strip().lower()
+
+        # checks that input is one of the 4 choices
+        if user_answer in choices:
+            break
+        else:
+            print("Sorry that is not one of the 4 choices, please try again.")
+
+    return user_answer
+
+
+# prints the question review
+def print_question_review(question_number, quiz_data, choices, user_answer, time):
+    print(f"{current_quiz[0][i]}\n")
+    for x in range(0, len(choices)):
+        print(f"    {choices[x]}) {current_quiz[x + 1][i]}", end=" ")
+
+        # appends different text to each choice depending on if its the answer or the users input
+        if current_quiz[5][i] == choices[x] and user_answer == choices[x]:
+            print("- Correct/Your answer")
+        elif current_quiz[5][i] == choices[x]:
+            print("- Correct answer")
+        elif user_answer == choices[x] and current_quiz[5][i] != choices[x]:
+            print("- Your answer")
+        else:
+            print("")
+
+    print("\n\n")
+
+    # compares user_answer to the answer key and prints whether they answered correctly or not
+    if user_answer == current_quiz[5][i]:
+        print("Well done, you answered the question", end=" ")
+        print("correctly", end=" ")
+        print(f"in {time:.1f} seconds.")
+    else:
+        print("Good try, unfortunately you answered the question", end=" ")
+        print("incorrectly", end=" ")
+        print(f"in {time:.1f} seconds.")
+
+
+def fun_fact(time, streak):
+    if random.randint(1, 2) == 1:
+        print("{:^155}".format(f"Fun fact: You had an average answer speed of {time:.1f} seconds for the questions that you answered correctly!"))
+    else:
+        print("{:^155}".format(f"Fun fact: Your highest answer streak for the quiz was {streak} correct answers in a row!"))
 
 
 # start of the app
@@ -241,6 +308,8 @@ while True:
     # set the number of topics manually according to the print statement above then call the function to get users selection
     number_of_topics = 3
     selected_topic = get_topic(number_of_topics)
+
+    # after getting topic selection, get the quiz data from randomizer() and set the topic to a variable
     if selected_topic == 1:
         current_quiz = randomizer(qd.test_dict)
         quiz_topic = "Capitol Cities"
@@ -260,35 +329,25 @@ while True:
     total_score = 0
     total_correct = 0
     total_time = 0
+    highest_streak = 0
     choices = ("a", "b", "c", "d")
 
     # loop through all the questions
     for i in range(9, len(current_quiz[0])):
         clear()
 
-        # prints the current question number and a countdown to it being displayed, also starts a timer when the countdown ends
+        # prints the current topic and question number, and a countdown to it being displayed, also starts a timer when the countdown ends
         print_topic_and_question_number(quiz_topic, i, current_quiz)
         countdown()
         clear()
         start_time = time.time()
 
-        # print the current question
+        # after the countdown, reprints the topic and question number then prints the question
         print_topic_and_question_number(quiz_topic, i, current_quiz)
+        print_question(i, current_quiz, choices)
 
-        # iterates over the choices tuple to print each one out
-        print(f"{current_quiz[0][i]}\n")
-        for x in range(0, len(choices)):
-            print(f"    {choices[x]}) {current_quiz[x + 1][i]}")
-
-        print("\n\n")
-
-        # ask for the user's answer and applies necessary string methods to check if it's a valid answer, repeat until a valid answer is given
-        while True:
-            user_answer = input("Enter your answer: ").strip().lower()
-            if user_answer in choices:
-                break
-            else:
-                print("Sorry that is not one of the 4 choices, please try again.")
+        # gets the users answer for the current question
+        user_answer = get_user_answer(choices)
 
         # stop the timer when user enters a valid answer and find the difference to get time taken
         end_time = time.time()
@@ -297,36 +356,16 @@ while True:
 
         # reprints the question for review, showing what the correct answer was and what answer the user gave
         print_topic_and_question_number(quiz_topic, i, current_quiz)
-        print(f"{current_quiz[0][i]}\n")
-        for x in range(0, len(choices)):
-            print(f"    {choices[x]}) {current_quiz[x + 1][i]}", end=" ")
-
-            if current_quiz[5][i] == choices[x]:
-                print("- Correct answer")
-            elif user_answer == choices[x] and current_quiz[5][i] != choices[x]:
-                print("- Your answer")
-            else:
-                print("")
-
-        print("\n\n")
-
-        # compares user_answer to the answer key and prints whether they answered correctly or not
-        if user_answer == current_quiz[5][i]:
-            print("Well done, you answered the question", end=" ")
-            print("correctly", end=" ")
-            print(f"in {time_taken:.1f} seconds.")
-        else:
-            print("Good try, unfortunately you answered the question", end=" ")
-            print("incorrectly", end=" ")
-            print(f"in {time_taken:.1f} seconds.")
+        print_question_review(i, current_quiz, choices, user_answer, time_taken)
 
         # calls the scoring function and updates variables with the values returned
-        score = scoring(current_quiz[5][i], user_answer, time_taken, current_points, total_score, total_correct, total_time, answer_streak)
+        score = scoring(current_quiz[5][i], user_answer, time_taken, current_points, total_score, total_correct, total_time, answer_streak, highest_streak)
         current_points = score[0]
         total_score = score[1]
         total_correct = score[2]
         total_time = score[3]
         answer_streak = score[4]
+        highest_streak = score[5]
 
         print("\n\n")
         print(f"You received {current_points} points for this question.\n")
@@ -340,7 +379,7 @@ while True:
         elif answer_streak == 0 and score[5] == 0:
             print("")
         else:
-            print(f"You have dropped your answer streak of {score[5]}.")
+            print(f"You have dropped your answer streak of {score[6]}.")
 
         # print a different continue message depending on if it's the last question or not
         print("\n\n")
@@ -349,7 +388,7 @@ while True:
         else:
             input("Press enter to continue to your results")
 
-    # calculate avg time for correct answers as a fun fact to display with the results
+    # after all questions have been answered calculate avg time for correct answers as a fun fact to display with the results
     # uses a try/except block in the case that no questions were answered correctly as it would be trying to divide by 0
     try:
         avg_time = total_time / total_correct
@@ -362,15 +401,15 @@ while True:
     print("{:^155}".format("Congratulations on completing the quiz!\n\n"))
     print("{:^155}".format(f"You answered {total_correct} out of {len(current_quiz[0])} questions correctly!\n"))
     print("{:^155}".format(f"Your final score is {total_score}\n\n\n"))
-    print("{:^155}".format(f"Fun fact: You had an average answer speed of {avg_time:.1f} seconds for the questions that you answered correctly.\n\n\n\n"))
+    fun_fact(avg_time, highest_streak)
+    print("\n\n\n")
 
     # checks for a valid input, repeats asking user what they would like to do until one is given
     while True:
         print("{:^155}".format("To view the leaderboard enter 'l', otherwise would you like to take another quiz? (y/n): "))
         end_of_quiz_input = input("{:^77}".format("")).strip().lower()
         if end_of_quiz_input != "l" and end_of_quiz_input != "y" and end_of_quiz_input != "n":
-            print("")
-            print("{:^155}".format("Sorry that isn't a valid option, please try again.\n"))
+            print("{:^155}".format("\nSorry that isn't a valid option, please try again.\n"))
         else:
             break
 
@@ -389,11 +428,9 @@ while True:
             # so we can save the input to the same variable as before
             end_of_quiz_input = input("{:^77}".format("")).strip().lower()
             if end_of_quiz_input != "l" and end_of_quiz_input != "y" and end_of_quiz_input != "n":
-                print("")
-                print("{:^155}".format("Sorry that isn't a valid option, please try again.\n"))
+                print("{:^155}".format("\nSorry that isn't a valid option, please try again.\n"))
             elif end_of_quiz_input == "l":
-                print("")
-                print("{:^155}".format("You are already viewing the leaderboard.\n"))
+                print("{:^155}".format("\nYou are already viewing the leaderboard.\n"))
             else:
                 break
 
