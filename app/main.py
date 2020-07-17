@@ -7,6 +7,30 @@ import time
 import question_dictionaries as qd
 
 
+# clear screen function
+def clear():
+    if os.name == "nt":
+        command = "cls"
+    else:
+        command = "clear"
+
+    os.system(command)
+
+
+# countdown function to be used before each question is displayed
+def countdown():
+    countdown_length = 5
+    while countdown_length > 0:
+
+        # first part of the write statement moves the cursor back to the left to write over the previous text
+        sys.stdout.write("\u001b[10D" + f"00:0{countdown_length}")
+
+        # need to flush the buffer to actually display the text or nothing will be shown until the function ends
+        sys.stdout.flush()
+        countdown_length -= 1
+        time.sleep(1)
+
+
 # takes the question dictionary for the selected topic and randomly picks 10 questions and 4 choices for each
 # returns a list of lists containing the questions, choices and the answer key
 def randomizer(question_dict):
@@ -124,6 +148,25 @@ def welcome():
     print("{:^155}".format("by Andrew Gregorovic"))
 
 
+# check if user tried to run app with any arguments and print notification messages if found
+def arguments(args):
+    valid_arguments = ["--help", "--start", "--random", "--anon"]
+    if len(args) > 1:
+        print("\n")
+        for i in range(1, len(args)):
+            if args[i] not in valid_arguments:
+                print("{:^155}".format(f"{args[i]} is not a valid argument for this application."))
+            elif args[i] == "--start":
+                print("{:^155}".format(f"App has been started with {args[i]}: You will not be asked for a name, a random topic will be selected and you will be taken straight to"))
+                print("{:^155}".format("the quiz for the remainder of this session."))
+            elif args[i] == "--random":
+                print("{:^155}".format(f"App has been started with {args[i]}: A random topic will be selected for you each time you take the quiz for the remainder of this session."))
+            elif args[i] == "--anon":
+                print("{:^155}".format(f"App has been started with {args[i]}: You will not be asked for a name for the remainder of this session."))
+        print("\n")
+    else:
+        print("\n\n\n\n")
+
 # ask user to press enter to continue
 def continue_input():
     print("{:^155}".format("Press enter to continue"))
@@ -148,49 +191,31 @@ def get_name():
 
 
 # gets user topic selection
-def get_topic(number_of_topics):
-    while True:
+def get_topic(number_of_topics, args):
 
-        # try/except block to prevent the app from crashing when the user enters an invalid input
-        try:
-            # ask user for their selection
-            selected_topic = int(input("What topic would you like to be quizzed on? (Please enter the topic number)\n").strip())
-            
-            # number must be within the range of the number of topics to be valid 
-            if selected_topic not in range(1, number_of_topics + 1):
-                print("\nSorry, that isn't a valid selection.\n")
-            else:
-                break
-
-        # catch the exception whenever anything other than a number is entered
-        except Exception:
-            print("\nSorry, that isn't a valid selection.\n")
-
-    return selected_topic
-
-
-# clear screen function
-def clear():
-    if os.name == "nt":
-        command = "cls"
+    # pick a random topic if app started with --start or --random, otherwise ask user for selection
+    if "--start" in args or "--random" in args:
+        return random.randint(1, 3)
     else:
-        command = "clear"
+        while True:
 
-    os.system(command)
+            # try/except block to prevent the app from crashing when the user enters an invalid input
+            try:
 
+                # ask user for their selection
+                selected_topic = int(input("What topic would you like to be quizzed on? (Please enter the topic number)\n").strip())
+                
+                # number must be within the range of the number of topics to be valid 
+                if selected_topic not in range(1, number_of_topics + 1):
+                    print("\nSorry, that isn't a valid selection.\n")
+                else:
+                    break
 
-# countdown function to be used before each question is displayed
-def countdown():
-    countdown_length = 5
-    while countdown_length > 0:
+            # catch the exception whenever anything other than a number is entered
+            except Exception:
+                print("\nSorry, that isn't a valid selection.\n")
 
-        # first part of the write statement moves the cursor back to the left to write over the previous text
-        sys.stdout.write("\u001b[10D" + f"00:0{countdown_length}")
-
-        # need to flush the buffer to actually display the text or nothing will be shown until the function ends
-        sys.stdout.flush()
-        countdown_length -= 1
-        time.sleep(1)
+        return selected_topic
 
 
 # prints the topic and question number
@@ -211,6 +236,7 @@ def print_question(question_number, quiz_data, choices):
         print(f"    {choices[x]}) {current_quiz[x + 1][i]}")
 
     print("\n\n")
+
 
 # gets users answer
 def get_user_answer(choices):
@@ -266,20 +292,21 @@ def fun_fact(time, streak):
 # start of the app
 clear()
 welcome()
-print("\n\n\n\n")
+arguments(sys.argv)
 continue_input()
 
-# clear screen and display the instructions/rules
-clear()
-print("\n\n\n")
-print("{:^155}".format("Clahoot!"))
-print("\n")
-print("""Clahoot! is a multiple choice quiz game created as a terminal application based on the online Kahoot! game.
+# clear screen and display the instructions/rules unless app is started with --start argument
+if "--start" not in sys.argv:
+    clear()
+    print("\n\n\n")
+    print("{:^155}".format("Clahoot!"))
+    print("\n")
+    print("""Clahoot! is a multiple choice quiz game created as a terminal application based on the online Kahoot! game.
 It has been adapted to a single player experience with a leaderboard rather than an online multiplayer game and follows a similar scoring style to Kahoot!.""")
-print("\n")
-print("{:^155}".format("Instructions"))
-print("\n")
-print("""The app will choose 10 random questions from a pool of potential questions for the topic you select.
+    print("\n")
+    print("{:^155}".format("Instructions"))
+    print("\n")
+    print("""The app will choose 10 random questions from a pool of potential questions for the topic you select.
 To input your answer, type the letter corresponding to the choice you would like to select and press 'Enter'.
 Before each question is displayed there will be a short countdown. Once it ends, a hidden timer will start to track how quickly you answer the question.
 After each question you will be given time to review the question and answer before moving on. This screen will also display your current score and speed.
@@ -287,27 +314,32 @@ You will be awarded points for each correct answer. You will receive additional 
 
 At the end of the quiz, your final score will be displayed along with how many questions you answered correctly.
 You will also have the option to view the current leaderboard for the topic you selected.""")
-print("\n\n\n")
-continue_input()
+    print("\n\n\n")
+    continue_input()
 
-# clear screen and get user name
+# clear screen and get user name unless app is started with --start or --anon
 clear()
 print("\n\n\n")
-user_name = get_name()
+if "--start" in sys.argv or "--anon" in sys.argv:
+    user_name = "anonymous"
+else:
+    user_name = get_name()
 
 # main application loop, allows user to take the quiz again without having to enter their name again but lets them choose a different topic
 while True:
 
-    print("\n\n")
-    print("""Before starting there are 3 topics available for you to choose between,\n
-        1) Capitol Cities
-        2) World Geography
-        3) World Languages""")
-    print("\n")
+    # only print if app was not started with --start or --random
+    if "--start" not in sys.argv and "--random" not in sys.argv:
+        print("\n\n")
+        print("""Before starting there are 3 topics available for you to choose between,\n
+            1) Capitol Cities
+            2) World Geography
+            3) World Languages""")
+        print("\n")
 
     # set the number of topics manually according to the print statement above then call the function to get users selection
     number_of_topics = 3
-    selected_topic = get_topic(number_of_topics)
+    selected_topic = get_topic(number_of_topics, sys.argv)
 
     # after getting topic selection, get the quiz data from randomizer() and set the topic to a variable
     if selected_topic == 1:
