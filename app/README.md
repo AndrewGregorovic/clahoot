@@ -41,4 +41,5 @@ Clahoot! can be run with the following options:
 - After each question you will be given time to review the question and answer before moving on. This screen will also display your current score and speed.
 - You will be awarded points for each correct answer. You will receive additional points for faster answers and maintaining an answer streak.
 - At the end of the quiz, your final score will be displayed along with how many questions you answered correctly and a fun fact about your performance.
+- Your final score will be added to the leaderboard if it qualifies as one of the top 10 score for the current topic and question length.
 - You will also have the option to view the current leaderboard for the topic you selected as well as options to play again or quit.
