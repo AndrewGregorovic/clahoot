@@ -84,7 +84,7 @@ def randomizer(question_dict):
 
 # using the time taken to answer the question and if the user is correct,
 # calculates the user's points for the current question and returns the value
-# to avoid using global, the function also needs to be passed all the variables that it needs to return updated values for
+# to avoid using globals, the function also needs to be passed all the variables that it needs to return updated values for
 def scoring(answer, user_answer, time_taken, current_points, total_score, total_correct, total_time, answer_streak, highest_streak):
 
     # if user answered correctly, update all values
@@ -313,6 +313,43 @@ def fun_fact(time, streak):
         print("{:^155}".format(f"Fun fact: Your highest answer streak for the quiz was {streak} correct answers in a row!"))
 
 
+# get user input while on the results screen
+def results_input():
+    while True:
+        print("{:^155}".format("To view the leaderboard enter 'l', otherwise would you like to take another quiz? (y/n): "))
+        end_of_quiz_input = input("{:^77}".format("")).strip().lower()
+        if end_of_quiz_input != "l" and end_of_quiz_input != "y" and end_of_quiz_input != "n":
+            print("")
+            print("{:^155}".format("Sorry that isn't a valid option, please try again.\n"))
+        else:
+            break
+
+    return end_of_quiz_input
+
+
+# get user input, since we're at the leaderboard the print message needs to be different to the results screen
+def leaderboard_input():
+    while True:
+        print("\n")
+        print("{:^155}".format("Would you like to take another quiz? (y/n): "))
+
+        # the user isn't allowed to input 'l' again and the only other inputs allowed are 'y' and 'n' which we haven't checked yet
+        # so we can save the input to the same variable as before
+        end_of_quiz_input = input("{:^77}".format("")).strip().lower()
+        if end_of_quiz_input != "l" and end_of_quiz_input != "y" and end_of_quiz_input != "n":
+            print("")
+            print("{:^155}".format("Sorry that isn't a valid option, please try again.\n"))
+
+        # need to print another message if the user tries to input 'l' again
+        elif end_of_quiz_input == "l":
+            print("")
+            print("{:^155}".format("You are already viewing the leaderboard.\n"))
+        else:
+            break
+
+    return end_of_quiz_input
+
+
 # start of the app
 clear()
 welcome()
@@ -461,18 +498,11 @@ while True:
     fun_fact(avg_time, highest_streak)
     print("\n\n\n")
 
-    # calls leaderboard function to save the users score if it qualifies as a high score and save the data to a variable if the user wants to view it
+    # calls leaderboard function to save the users score if it qualifies as a high score and save current leaderboard data to a variable if the user wants to view it
     current_leaderboard = leaderboard(quiz_topic, current_quiz, user_name, total_score)
 
-    # checks for a valid input, repeats asking user what they would like to do until one is given
-    while True:
-        print("{:^155}".format("To view the leaderboard enter 'l', otherwise would you like to take another quiz? (y/n): "))
-        end_of_quiz_input = input("{:^77}".format("")).strip().lower()
-        if end_of_quiz_input != "l" and end_of_quiz_input != "y" and end_of_quiz_input != "n":
-            print("")
-            print("{:^155}".format("Sorry that isn't a valid option, please try again.\n"))
-        else:
-            break
+    # need to get user input while on the results screen
+    end_of_quiz_input = results_input()
 
     # first checks if user selected view leaderboard
     if end_of_quiz_input == "l":
@@ -487,23 +517,8 @@ while True:
         for name, score in current_leaderboard:
             print (" " * 62 + "   {:<13}|{:^11}".format(name, score))
 
-        # need to get user input again, since we're at the leaderboard the print message needs to be different
-        # also need to print another message if the user tries to input 'l' again
-        while True:
-            print("\n")
-            print("{:^155}".format("Would you like to take another quiz? (y/n): "))
-
-            # the user isn't allowed to input 'l' again and the only other inputs allowed are 'y' and 'n' which we haven't checked yet
-            # so we can save the input to the same variable as before
-            end_of_quiz_input = input("{:^77}".format("")).strip().lower()
-            if end_of_quiz_input != "l" and end_of_quiz_input != "y" and end_of_quiz_input != "n":
-                print("")
-                print("{:^155}".format("Sorry that isn't a valid option, please try again.\n"))
-            elif end_of_quiz_input == "l":
-                print("")
-                print("{:^155}".format("You are already viewing the leaderboard.\n"))
-            else:
-                break
+        # need to get user input again on the leaderboard screen
+        end_of_quiz_input = leaderboard_input()
 
     # check user input to determine if the app stops or continues again, clear the screen if we continue
     if end_of_quiz_input == "y":
