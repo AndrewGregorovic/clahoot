@@ -1,5 +1,8 @@
+#!/usr/sbin/python
+
 import os
 import random
+import sys
 import time
 import question_dictionaries as qd
 
