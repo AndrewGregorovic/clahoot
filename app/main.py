@@ -34,7 +34,7 @@ def countdown():
 # takes the question dictionary for the selected topic and randomly picks 10 questions and 4 choices for each
 # returns a list of lists containing the questions, choices and the answer key
 def randomizer(question_dict):
-    number_of_questions = 10
+    number_of_questions = random.randint(10, 20)
 
     # creates individual empty lists that will be used to hold the corresponding random selections
     question_list = []
@@ -275,7 +275,7 @@ def print_question_review(question_number, quiz_data, choices, user_answer, time
     if user_answer == current_quiz[5][i]:
         print("Well done, you answered the question", end=" ")
         print("correctly", end=" ")
-        print(f"in {time:.1f} seconds.")
+        print(f"in {time:.1f} seconds!")
     else:
         print("Good try, unfortunately you answered the question", end=" ")
         print("incorrectly", end=" ")
@@ -306,7 +306,8 @@ It has been adapted to a single player experience with a leaderboard rather than
     print("\n")
     print("{:^155}".format("Instructions"))
     print("\n")
-    print("""The app will choose 10 random questions from a pool of potential questions for the topic you select.
+    print("""The app will randomly choose the length of the quiz (10-20 questions) and the questions that you will be asked.
+The questions will be from a pool of potential questions for the topic you select.
 To input your answer, type the letter corresponding to the choice you would like to select and press 'Enter'.
 Before each question is displayed there will be a short countdown. Once it ends, a hidden timer will start to track how quickly you answer the question.
 After each question you will be given time to review the question and answer before moving on. This screen will also display your current score and speed.
@@ -365,7 +366,7 @@ while True:
     choices = ("a", "b", "c", "d")
 
     # loop through all the questions
-    for i in range(9, len(current_quiz[0])):
+    for i in range(len(current_quiz[0]) - 2, len(current_quiz[0])):
         clear()
 
         # prints the current topic and question number, and a countdown to it being displayed, also starts a timer when the countdown ends
@@ -399,7 +400,7 @@ while True:
         answer_streak = score[4]
         highest_streak = score[5]
 
-        print("\n\n")
+        print("\n--------------------------------------------------------------------------------------------------------\n")
         print(f"You received {current_points} points for this question.\n")
         print(f"Your current score is: {total_score}\n")
 
