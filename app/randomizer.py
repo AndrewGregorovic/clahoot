@@ -1,5 +1,32 @@
 import random
 
+# gets user topic selection
+def get_topic(number_of_topics, opts):
+
+    # pick a random topic if app started with --start or --random, otherwise ask user for selection
+    if "--start" in opts or "--random" in opts:
+        return random.randint(1, 3)
+    else:
+        while True:
+
+            # try/except block to prevent the app from crashing when the user enters an invalid input
+            try:
+
+                # ask user for their selection
+                selected_topic = int(input("What topic would you like to be quizzed on? (Please enter the topic number)\n").strip())
+                
+                # number must be within the range of the number of topics to be valid 
+                if selected_topic not in range(1, number_of_topics + 1):
+                    print("\nSorry, that isn't a valid selection.\n")
+                else:
+                    break
+
+            # catch the exception whenever anything other than a number is entered
+            except Exception:
+                print("\nSorry, that isn't a valid selection.\n")
+
+        return selected_topic
+
 # takes the question dictionary for the selected topic and randomly picks 10 questions and 4 choices for each
 # returns a list of lists containing the questions, choices and the answer key
 def randomizer(question_dict):
@@ -47,30 +74,3 @@ def randomizer(question_dict):
 
     # returns a list of lists which contains all the required values for the current quiz
     return [question_list, choice_a_list, choice_b_list, choice_c_list, choice_d_list, answer_key]
-
-# gets user topic selection
-def get_topic(number_of_topics, args):
-
-    # pick a random topic if app started with --start or --random, otherwise ask user for selection
-    if "--start" in args or "--random" in args:
-        return random.randint(1, 3)
-    else:
-        while True:
-
-            # try/except block to prevent the app from crashing when the user enters an invalid input
-            try:
-
-                # ask user for their selection
-                selected_topic = int(input("What topic would you like to be quizzed on? (Please enter the topic number)\n").strip())
-                
-                # number must be within the range of the number of topics to be valid 
-                if selected_topic not in range(1, number_of_topics + 1):
-                    print("\nSorry, that isn't a valid selection.\n")
-                else:
-                    break
-
-            # catch the exception whenever anything other than a number is entered
-            except Exception:
-                print("\nSorry, that isn't a valid selection.\n")
-
-        return selected_topic

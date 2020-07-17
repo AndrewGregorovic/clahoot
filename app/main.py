@@ -60,21 +60,21 @@ def welcome():
     print("{:^163}".format("\u001b[1mby Andrew Gregorovic\u001b[0m"))
 
 
-# check if user tried to run app with any arguments and print notification messages if found
-def arguments(args):
-    valid_arguments = ["--help", "--start", "--random", "--anon"]
-    if len(args) > 1:
+# check if user tried to run app with any options and print notification messages if found
+def options(opts):
+    valid_options = ["--help", "--start", "--random", "--anon"]
+    if len(opts) > 1:
         print("\n")
-        for i in range(1, len(args)):
-            if args[i] not in valid_arguments:
-                print("{:^155}".format(f"{args[i]} is not a valid argument for this application."))
-            elif args[i] == "--start":
-                print("{:^155}".format(f"App has been started with {args[i]}: You will not be asked for a name, a random topic will be selected and you will be taken straight to"))
+        for i in range(1, len(opts)):
+            if opts[i] not in valid_options:
+                print("{:^155}".format(f"{opts[i]} is not a valid option for this application."))
+            elif opts[i] == "--start":
+                print("{:^155}".format(f"App has been started with {opts[i]}: You will not be asked for a name, a random topic will be selected and you will be taken straight to"))
                 print("{:^155}".format("the quiz for the remainder of this session."))
-            elif args[i] == "--random":
-                print("{:^155}".format(f"App has been started with {args[i]}: A random topic will be selected for you each time you take the quiz for the remainder of this session."))
-            elif args[i] == "--anon":
-                print("{:^155}".format(f"App has been started with {args[i]}: You will not be asked for a name for the remainder of this session."))
+            elif opts[i] == "--random":
+                print("{:^155}".format(f"App has been started with {opts[i]}: A random topic will be selected for you each time you take the quiz for the remainder of this session."))
+            elif opts[i] == "--anon":
+                print("{:^155}".format(f"App has been started with {opts[i]}: You will not be asked for a name for the remainder of this session."))
         print("\n")
     else:
         print("\n\n\n\n")
@@ -171,9 +171,9 @@ def print_question_review(question_number, quiz_data, choices, user_answer, time
 
 
 def fun_fact(time, streak):
-    #if random.randint(1, 2) == 1:
+    if random.randint(1, 2) == 1:
         print("{:^155}".format(f"Fun fact: You had an average answer speed of {time:.1f} seconds for the questions that you answered correctly!"))
-    #else:
+    else:
         print("{:^155}".format(f"Fun fact: Your highest answer streak for the quiz was {streak} correct answers in a row!"))
 
 
@@ -191,162 +191,166 @@ def results_input():
     return end_of_quiz_input
 
 
-# start of the app
-clear()
-welcome()
-arguments(sys.argv)
-continue_input()
-
-# clear screen and display the instructions/rules unless app is started with --start argument
-if "--start" not in sys.argv:
+# display readme if app started with --help option instead of running the quiz app
+if "--help" in sys.argv:
+    with open("README.md") as f:
+        print(f.read())
+else:
+    # start the quiz app
     clear()
-    print("\n\n\n")
-    print("{:^163}".format("\u001b[4mClahoot!\u001b[0m"))
-    print("\n")
-    print("""Clahoot! is a multiple choice quiz game created as a terminal application based on the online Kahoot! game.
-It has been adapted to a single player experience with a leaderboard rather than an online multiplayer game and follows a similar scoring style to Kahoot!.""")
-    print("\n")
-    print("{:^163}".format("\u001b[4mInstructions\u001b[0m"))
-    print("\n")
-    print("""The app will randomly choose the length of the quiz (10-20 questions) and the questions that you will be asked.
-The questions will be from a pool of potential questions for the topic you select.
-To input your answer, type the letter corresponding to the choice you would like to select and press 'Enter'.
-Before each question is displayed there will be a short countdown. Once it ends, a hidden timer will start to track how quickly you answer the question.
-After each question you will be given time to review the question and answer before moving on. This screen will also display your current score and speed.
-You will be awarded points for each correct answer. You will receive additional points for faster answers and maintaining an answer streak.
-
-At the end of the quiz, your final score will be displayed along with how many questions you answered correctly.
-You will also have the option to view the current leaderboard for the topic you selected.""")
-    print("\n\n\n")
+    welcome()
+    options(sys.argv)
     continue_input()
 
-# clear screen and get user name unless app is started with --start or --anon
-clear()
-print("\n\n\n")
-if "--start" in sys.argv or "--anon" in sys.argv:
-    user_name = "anonymous"
-else:
-    user_name = get_name()
-
-# main application loop, allows user to take the quiz again without having to enter their name again but lets them choose a different topic
-while True:
-
-    # only print if app was not started with --start or --random
-    if "--start" not in sys.argv and "--random" not in sys.argv:
-        print("\n\n")
-        print("""Before starting there are 3 topics available for you to choose between,\n
-            1) Capitol Cities
-            2) World Geography
-            3) World Languages""")
+    # clear screen and display the instructions/rules unless app is started with --start option
+    if "--start" not in sys.argv:
+        clear()
+        print("\n\n\n")
+        print("{:^163}".format("\u001b[4mClahoot!\u001b[0m"))
         print("\n")
+        print("""Clahoot! is a multiple choice quiz game created as a terminal application based on the online Kahoot! game.
+It has been adapted to a single player experience with a leaderboard rather than an online multiplayer game and follows a similar scoring style to Kahoot!.""")
+        print("\n")
+        print("{:^163}".format("\u001b[4mInstructions\u001b[0m"))
+        print("\n")
+        print("""- The app will randomly choose the length of the quiz (10-20 questions) and the questions that you will be asked.
+- The questions will be from a pool of potential questions for the topic you select.
+- To input your answer, type the letter corresponding to the choice you would like to select and press 'Enter'.
+- Before each question is displayed there will be a short countdown. Once it ends, a hidden timer will start to track how quickly you answer the question.
+- After each question you will be given time to review the question and answer before moving on. This screen will also display your current score and speed.
+- You will be awarded points for each correct answer. You will receive additional points for faster answers and maintaining an answer streak.
+- At the end of the quiz, your final score will be displayed along with how many questions you answered correctly and a fun fact about your performance.
+- You will also have the option to view the current leaderboard for the topic you selected as well as options to play again or quit.""")
+        print("\n\n\n")
+        continue_input()
 
-    # set the number of topics manually according to the print statement above then call the function to get users selection
-    number_of_topics = 3
-    selected_topic = get_topic(number_of_topics, sys.argv)
-
-    # after getting topic selection, get the quiz data from randomizer() and set the topic to a variable
-    if selected_topic == 1:
-        current_quiz = randomizer(qd.test_dict)
-        quiz_topic = "Capitol Cities"
-    elif selected_topic == 2:
-        current_quiz = randomizer(qd.test_dict)
-        quiz_topic = "World Geography"
-    elif selected_topic == 3:
-        current_quiz = randomizer(qd.test_dict)
-        quiz_topic = "World Languages"
-
-    print("\n\n\n")
-    input("Press enter when you are ready to begin the quiz")
-
-    # initialise variables that will be used during the quiz
-    choices = ("a", "b", "c", "d")
-
-    # score data is kept as a list to make the code cleaner but it makes it slightly more confusing to keep track of what value is what piece of info
-    # it is set up to be: [0] pts for current question
-    #                     [1] total pts
-    #                     [2] total correct answers
-    #                     [3] total time for correct answers
-    #                     [4] current answer streak
-    #                     [5] highest answer streak
-    #                     [6] previous answer streak
-    score_data = [0, 0, 0, 0, 0, 0, 0]
-
-    # loop through all the questions
-    for i in range(len(current_quiz[0]) - 5, len(current_quiz[0])):
-        clear()
-
-        # prints the current topic and question number, and a countdown to it being displayed, also starts a timer when the countdown ends
-        print_topic_and_question_number(quiz_topic, i, current_quiz)
-        countdown()
-        clear()
-        start_time = time.time()
-
-        # after the countdown, reprints the topic and question number then prints the question
-        print_topic_and_question_number(quiz_topic, i, current_quiz)
-        print_question(i, current_quiz, choices)
-
-        # gets the users answer for the current question
-        user_answer = get_user_answer(choices)
-
-        # stop the timer when user enters a valid answer and find the difference to get time taken
-        end_time = time.time()
-        time_taken = end_time - start_time
-        clear()
-
-        # reprints the question for review, showing what the correct answer was and what answer the user gave
-        print_topic_and_question_number(quiz_topic, i, current_quiz)
-        print_question_review(i, current_quiz, choices, user_answer, time_taken)
-
-        # calls the scoring function and updates variables with the values returned
-        score_data = scoring(current_quiz[5][i], user_answer, time_taken, score_data)
-
-        # prints current score info as part of the review screen
-        print_current_score(score_data)
-
-        # print a different continue message depending on if it's the last question or not
-        print("\n\n")
-        if i + 1 != len(current_quiz[0]):
-            input("Press enter to continue to the next question")
-        else:
-            input("Press enter to continue to your results")
-
-    # get avg answer time for correctly answered questions
-    avg_time = get_avg_time(score_data[3], score_data[2])
-
-    # clear screen and display results
+    # clear screen and get user name unless app is started with --start or --anon
     clear()
     print("\n\n\n")
-    print("{:^163}".format("\u001b[4mCongratulations on completing the quiz!\u001b[0m\n\n"))
-    print("{:^171}".format(f"You answered \u001b[1m{score_data[2]}\u001b[0m out of \u001b[1m{len(current_quiz[0])}\u001b[0m questions correctly!\n"))
-    print("{:^163}".format(f"Your final score is \u001b[1m{score_data[1]}\u001b[0m\n\n\n"))
-    fun_fact(avg_time, score_data[5])
-    print("\n\n\n")
-
-    # calls leaderboard function to save the users score if it qualifies as a high score and save current leaderboard data to a variable if the user wants to view it
-    current_leaderboard = leaderboard(quiz_topic, current_quiz, user_name, score_data[1])
-
-    # need to get user input while on the results screen
-    end_of_quiz_input = results_input()
-
-    # first checks if user selected view leaderboard
-    if end_of_quiz_input == "l":
-        clear()
-
-        # display leaderboard
-        print_leaderboard(quiz_topic, current_quiz, current_leaderboard)
-
-        # need to get user input again on the leaderboard screen
-        end_of_quiz_input = leaderboard_input()
-
-    # check user input to determine if the app stops or continues again, clear the screen if we continue
-    if end_of_quiz_input == "y":
-        clear()
-        continue
+    if "--start" in sys.argv or "--anon" in sys.argv:
+        user_name = "anonymous"
     else:
+        user_name = get_name()
+
+    # main application loop, allows user to take the quiz again without having to enter their name again but lets them choose a different topic
+    while True:
+
+        # only print if app was not started with --start or --random
+        if "--start" not in sys.argv and "--random" not in sys.argv:
+            print("\n\n")
+            print("""Before starting there are 3 topics available for you to choose between,\n
+        1) Capitol Cities
+        2) World Geography
+        3) World Languages""")
+            print("\n")
+
+        # set the number of topics manually according to the print statement above then call the function to get users selection
+        number_of_topics = 3
+        selected_topic = get_topic(number_of_topics, sys.argv)
+
+        # after getting topic selection, get the quiz data from randomizer() and set the topic to a variable
+        if selected_topic == 1:
+            current_quiz = randomizer(qd.test_dict)
+            quiz_topic = "Capitol Cities"
+        elif selected_topic == 2:
+            current_quiz = randomizer(qd.test_dict)
+            quiz_topic = "World Geography"
+        elif selected_topic == 3:
+            current_quiz = randomizer(qd.test_dict)
+            quiz_topic = "World Languages"
+
+        print("\n\n\n")
+        input("Press enter when you are ready to begin the quiz")
+
+        # initialise variables that will be used during the quiz
+        choices = ("a", "b", "c", "d")
+
+        # score data is kept as a list to make the code cleaner but it makes it slightly more confusing to keep track of what value is what piece of info
+        # it is set up to be: [0] pts for current question
+        #                     [1] total pts
+        #                     [2] total correct answers
+        #                     [3] total time for correct answers
+        #                     [4] current answer streak
+        #                     [5] highest answer streak
+        #                     [6] previous answer streak
+        score_data = [0, 0, 0, 0, 0, 0, 0]
+
+        # loop through all the questions
+        for i in range(0, len(current_quiz[0])):
+            clear()
+
+            # prints the current topic and question number, and a countdown to it being displayed, also starts a timer when the countdown ends
+            print_topic_and_question_number(quiz_topic, i, current_quiz)
+            countdown()
+            clear()
+            start_time = time.time()
+
+            # after the countdown, reprints the topic and question number then prints the question
+            print_topic_and_question_number(quiz_topic, i, current_quiz)
+            print_question(i, current_quiz, choices)
+
+            # gets the users answer for the current question
+            user_answer = get_user_answer(choices)
+
+            # stop the timer when user enters a valid answer and find the difference to get time taken
+            end_time = time.time()
+            time_taken = end_time - start_time
+            clear()
+
+            # reprints the question for review, showing what the correct answer was and what answer the user gave
+            print_topic_and_question_number(quiz_topic, i, current_quiz)
+            print_question_review(i, current_quiz, choices, user_answer, time_taken)
+
+            # calls the scoring function and updates variables with the values returned
+            score_data = scoring(current_quiz[5][i], user_answer, time_taken, score_data)
+
+            # prints current score info as part of the review screen
+            print_current_score(score_data)
+
+            # print a different continue message depending on if it's the last question or not
+            print("\n\n")
+            if i + 1 != len(current_quiz[0]):
+                input("Press enter to continue to the next question")
+            else:
+                input("Press enter to continue to your results")
+
+        # get avg answer time for correctly answered questions
+        avg_time = get_avg_time(score_data[3], score_data[2])
+
+        # clear screen and display results
         clear()
-        print("\n")
-        print("{:^155}".format("Thanks for playing,"))
-        welcome()
-        time.sleep(5)
-        clear()
-        break
+        print("\n\n\n")
+        print("{:^163}".format("\u001b[4mCongratulations on completing the quiz!\u001b[0m\n\n"))
+        print("{:^171}".format(f"You answered \u001b[1m{score_data[2]}\u001b[0m out of \u001b[1m{len(current_quiz[0])}\u001b[0m questions correctly!\n"))
+        print("{:^163}".format(f"Your final score is \u001b[1m{score_data[1]}\u001b[0m\n\n\n"))
+        fun_fact(avg_time, score_data[5])
+        print("\n\n\n")
+
+        # calls leaderboard function to save the users score if it qualifies as a high score and save current leaderboard data to a variable if the user wants to view it
+        current_leaderboard = leaderboard(quiz_topic, current_quiz, user_name, score_data[1])
+
+        # need to get user input while on the results screen
+        end_of_quiz_input = results_input()
+
+        # first checks if user selected view leaderboard
+        if end_of_quiz_input == "l":
+            clear()
+
+            # display leaderboard
+            print_leaderboard(quiz_topic, current_quiz, current_leaderboard)
+
+            # need to get user input again on the leaderboard screen
+            end_of_quiz_input = leaderboard_input()
+
+        # check user input to determine if the app stops or continues again, clear the screen if we continue
+        if end_of_quiz_input == "y":
+            clear()
+            continue
+        else:
+            clear()
+            print("\n")
+            print("{:^155}".format("Thanks for playing,"))
+            welcome()
+            time.sleep(5)
+            clear()
+            break
