@@ -145,7 +145,7 @@ def leaderboard(quiz_topic, quiz_data, user_name, score):
 
     # display leaderboard
     print("\n\n\n")
-    print("{:^155}".format(f"High Scores for the {quiz_topic} topic with {len(quiz_data[0])} questions"))
+    print("{:^187}".format(f"\u001b[1mHigh Scores for the \u001b[4m{quiz_topic}\u001b[0m\u001b[1m topic with \u001b[4m{len(quiz_data[0])}\u001b[0m\u001b[1m questions\u001b[0m"))
     print("\n")
     print(" " * 62 + "{:^16}|{:^11}".format("Name", "Score"))
     print(" " * 62 + "----------------------------")
@@ -173,7 +173,7 @@ def welcome():
     print("               CCC::::::::::::C l::::::l  a::::::::::aa:::a h:::::h     h:::::h  oo:::::::::::oo   oo:::::::::::oo          tt:::::::::::tt !!:!!          ")
     print("                  CCCCCCCCCCCCC llllllll   aaaaaaaaaa  aaaa hhhhhhh     hhhhhhh    ooooooooooo       ooooooooooo              ttttttttttt    !!!           ")
     print("\n")
-    print("{:^155}".format("by Andrew Gregorovic"))
+    print("{:^163}".format("\u001b[1mby Andrew Gregorovic\u001b[0m"))
 
 
 # check if user tried to run app with any arguments and print notification messages if found
@@ -212,7 +212,7 @@ def get_name():
         elif user_name.isalpha() == False:
             print("\nSorry that is not a valid name, it can't contain numbers or any special characters.\n")
         else:
-            print(f"\n\nWelcome {user_name}!")
+            print(f"\n\nWelcome \u001b[4m{user_name}\u001b[0m!")
             break
 
     return user_name
@@ -249,9 +249,9 @@ def get_topic(number_of_topics, args):
 # prints the topic and question number
 def print_topic_and_question_number(topic, question_number, quiz_data):
     print("\n")
-    print(f"{topic}")
+    print(f"\u001b[1m{topic}\u001b[0m")
     print("")
-    print(f"Question {i + 1}/{len(current_quiz[0])}")
+    print(f"\u001b[4mQuestion {i + 1}/{len(current_quiz[0])}\u001b[0m")
     print("\n")
 
 
@@ -327,12 +327,12 @@ continue_input()
 if "--start" not in sys.argv:
     clear()
     print("\n\n\n")
-    print("{:^155}".format("Clahoot!"))
+    print("{:^163}".format("\u001b[4mClahoot!\u001b[0m"))
     print("\n")
     print("""Clahoot! is a multiple choice quiz game created as a terminal application based on the online Kahoot! game.
 It has been adapted to a single player experience with a leaderboard rather than an online multiplayer game and follows a similar scoring style to Kahoot!.""")
     print("\n")
-    print("{:^155}".format("Instructions"))
+    print("{:^163}".format("\u001b[4mInstructions\u001b[0m"))
     print("\n")
     print("""The app will randomly choose the length of the quiz (10-20 questions) and the questions that you will be asked.
 The questions will be from a pool of potential questions for the topic you select.
@@ -459,9 +459,9 @@ while True:
     # clear screen and display results
     clear()
     print("\n\n\n")
-    print("{:^155}".format("Congratulations on completing the quiz!\n\n"))
-    print("{:^155}".format(f"You answered {total_correct} out of {len(current_quiz[0])} questions correctly!\n"))
-    print("{:^155}".format(f"Your final score is {total_score}\n\n\n"))
+    print("{:^163}".format("\u001b[4mCongratulations on completing the quiz!\u001b[0m\n\n"))
+    print("{:^171}".format(f"You answered \u001b[1m{total_correct}\u001b[0m out of \u001b[1m{len(current_quiz[0])}\u001b[0m questions correctly!\n"))
+    print("{:^163}".format(f"Your final score is \u001b[1m{total_score}\u001b[0m\n\n\n"))
     fun_fact(avg_time, highest_streak)
     print("\n\n\n")
 
@@ -470,7 +470,8 @@ while True:
         print("{:^155}".format("To view the leaderboard enter 'l', otherwise would you like to take another quiz? (y/n): "))
         end_of_quiz_input = input("{:^77}".format("")).strip().lower()
         if end_of_quiz_input != "l" and end_of_quiz_input != "y" and end_of_quiz_input != "n":
-            print("{:^155}".format("\nSorry that isn't a valid option, please try again.\n"))
+            print("")
+            print("{:^155}".format("Sorry that isn't a valid option, please try again.\n"))
         else:
             break
 
@@ -489,9 +490,11 @@ while True:
             # so we can save the input to the same variable as before
             end_of_quiz_input = input("{:^77}".format("")).strip().lower()
             if end_of_quiz_input != "l" and end_of_quiz_input != "y" and end_of_quiz_input != "n":
-                print("{:^155}".format("\nSorry that isn't a valid option, please try again.\n"))
+                print("")
+                print("{:^155}".format("Sorry that isn't a valid option, please try again.\n"))
             elif end_of_quiz_input == "l":
-                print("{:^155}".format("\nYou are already viewing the leaderboard.\n"))
+                print("")
+                print("{:^155}".format("You are already viewing the leaderboard.\n"))
             else:
                 break
 
