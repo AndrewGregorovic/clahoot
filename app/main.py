@@ -5,9 +5,9 @@ import random
 import sys
 import time
 
-from randomizer import randomizer
-from scoring import scoring
-from leaderboard import leaderboard
+from randomizer import randomizer, get_topic
+from scoring import scoring, get_avg_time
+from leaderboard import leaderboard, print_leaderboard, leaderboard_input
 
 import preset_leaderboard as plb
 import question_dictionaries as qd
@@ -79,6 +79,7 @@ def arguments(args):
     else:
         print("\n\n\n\n")
 
+
 # ask user to press enter to continue
 def continue_input():
     print("{:^155}".format("Press enter to continue"))
@@ -100,34 +101,6 @@ def get_name():
             break
 
     return user_name
-
-
-# gets user topic selection
-def get_topic(number_of_topics, args):
-
-    # pick a random topic if app started with --start or --random, otherwise ask user for selection
-    if "--start" in args or "--random" in args:
-        return random.randint(1, 3)
-    else:
-        while True:
-
-            # try/except block to prevent the app from crashing when the user enters an invalid input
-            try:
-
-                # ask user for their selection
-                selected_topic = int(input("What topic would you like to be quizzed on? (Please enter the topic number)\n").strip())
-                
-                # number must be within the range of the number of topics to be valid 
-                if selected_topic not in range(1, number_of_topics + 1):
-                    print("\nSorry, that isn't a valid selection.\n")
-                else:
-                    break
-
-            # catch the exception whenever anything other than a number is entered
-            except Exception:
-                print("\nSorry, that isn't a valid selection.\n")
-
-        return selected_topic
 
 
 # prints the topic and question number
@@ -212,29 +185,6 @@ def results_input():
         if end_of_quiz_input != "l" and end_of_quiz_input != "y" and end_of_quiz_input != "n":
             print("")
             print("{:^155}".format("Sorry that isn't a valid option, please try again.\n"))
-        else:
-            break
-
-    return end_of_quiz_input
-
-
-# get user input, since we're at the leaderboard the print message needs to be different to the results screen
-def leaderboard_input():
-    while True:
-        print("\n")
-        print("{:^155}".format("Would you like to take another quiz? (y/n): "))
-
-        # the user isn't allowed to input 'l' again and the only other inputs allowed are 'y' and 'n' which we haven't checked yet
-        # so we can save the input to the same variable as before
-        end_of_quiz_input = input("{:^77}".format("")).strip().lower()
-        if end_of_quiz_input != "l" and end_of_quiz_input != "y" and end_of_quiz_input != "n":
-            print("")
-            print("{:^155}".format("Sorry that isn't a valid option, please try again.\n"))
-
-        # need to print another message if the user tries to input 'l' again
-        elif end_of_quiz_input == "l":
-            print("")
-            print("{:^155}".format("You are already viewing the leaderboard.\n"))
         else:
             break
 
@@ -373,12 +323,7 @@ while True:
         else:
             input("Press enter to continue to your results")
 
-    # after all questions have been answered calculate avg time for correct answers as a fun fact to display with the results
-    # uses a try/except block in the case that no questions were answered correctly as it would be trying to divide by 0
-    try:
-        avg_time = total_time / total_correct
-    except Exception:
-        avg_time = 0
+    avg_time = get_avg_time(total_time, total_correct)
 
     # clear screen and display results
     clear()
@@ -399,14 +344,8 @@ while True:
     if end_of_quiz_input == "l":
         clear()
 
-        # display leaderboard if requested
-        print("\n\n\n")
-        print("{:^187}".format(f"\u001b[1mHigh Scores for the \u001b[4m{quiz_topic}\u001b[0m\u001b[1m topic with \u001b[4m{len(current_quiz[0])}\u001b[0m\u001b[1m questions\u001b[0m"))
-        print("\n")
-        print(" " * 62 + "{:^16}|{:^11}".format("Name", "Score"))
-        print(" " * 62 + "----------------------------")
-        for name, score in current_leaderboard:
-            print (" " * 62 + "   {:<13}|{:^11}".format(name, score))
+        # display leaderboard
+        print_leaderboard(quiz_topic, current_quiz, current_leaderboard)
 
         # need to get user input again on the leaderboard screen
         end_of_quiz_input = leaderboard_input()

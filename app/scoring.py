@@ -30,3 +30,11 @@ def scoring(answer, user_answer, time_taken, current_points, total_score, total_
         answer_streak = 0
         current_points = 0
         return [current_points, total_score, total_correct, total_time, answer_streak, highest_streak, previous_answer_streak]
+
+# after all questions have been answered calculate avg time for correct answers as a fun fact to display with the results
+# uses a try/except block in the case that no questions were answered correctly as it would be trying to divide by 0
+def get_avg_time(time, correct):
+    try:
+        return (time / correct)
+    except Exception:
+        return 0
