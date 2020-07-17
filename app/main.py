@@ -97,46 +97,121 @@ def leaderboard():
     # display leaderboard
     pass
 
+
+# welcome screen
+def welcome():
+    print("\n\n")
+    print("                  CCCCCCCCCCCCC lllllll                    hhhhhhh                                                           tttt            !!!           ")
+    print("               CCC::::::::::::C l:::::l                    h:::::h                                                        ttt:::t           !!:!!          ")
+    print("             CC:::::::::::::::C l:::::l                    h:::::h                                                        t:::::t           !:::!          ")
+    print("            C:::::CCCCCCCC::::C l:::::l                    h:::::h                                                        t:::::t           !:::!          ")
+    print("           C:::::C       CCCCCC  l::::l    aaaaaaaaaaaaa    h::::h hhhhh           ooooooooooo       ooooooooooo    ttttttt:::::ttttttt     !:::!          ")
+    print("          C:::::C                l::::l    a::::::::::::a   h::::hh:::::hhh      oo:::::::::::oo   oo:::::::::::oo  t:::::::::::::::::t     !:::!          ")
+    print("          C:::::C                l::::l    aaaaaaaaa:::::a  h::::::::::::::hh   o:::::::::::::::o o:::::::::::::::o t:::::::::::::::::t     !:::!          ")
+    print("          C:::::C                l::::l             a::::a  h:::::::hhh::::::h  o:::::ooooo:::::o o:::::ooooo:::::o tttttt:::::::tttttt     !:::!          ")
+    print("          C:::::C                l::::l      aaaaaaa:::::a  h::::::h   h::::::h o::::o     o::::o o::::o     o::::o       t:::::t           !:::!          ")
+    print("          C:::::C                l::::l    aa::::::::::::a  h:::::h     h:::::h o::::o     o::::o o::::o     o::::o       t:::::t           !:::!          ")
+    print("          C:::::C                l::::l   a::::aaaa::::::a  h:::::h     h:::::h o::::o     o::::o o::::o     o::::o       t:::::t           !!:!!          ")
+    print("           C:::::C       CCCCCC  l::::l  a::::a    a:::::a  h:::::h     h:::::h o::::o     o::::o o::::o     o::::o       t:::::t    tttttt  !!!           ")
+    print("            C:::::CCCCCCCC::::C l::::::l a::::a    a:::::a  h:::::h     h:::::h o:::::ooooo:::::o o:::::ooooo:::::o       t::::::tttt:::::t                ")
+    print("             CC:::::::::::::::C l::::::l a:::::aaaa::::::a  h:::::h     h:::::h o:::::::::::::::o o:::::::::::::::o       tt::::::::::::::t  !!!           ")
+    print("               CCC::::::::::::C l::::::l  a::::::::::aa:::a h:::::h     h:::::h  oo:::::::::::oo   oo:::::::::::oo          tt:::::::::::tt !!:!!          ")
+    print("                  CCCCCCCCCCCCC llllllll   aaaaaaaaaa  aaaa hhhhhhh     hhhhhhh    ooooooooooo       ooooooooooo              ttttttttttt    !!!           ")
+    print("\n")
+    print("{:^155}".format("by Andrew Gregorovic"))
+
+
+# ask user to press enter to continue
+def continue_input():
+    print("{:^155}".format("Press enter to continue"))
+    input("{:^77}".format(""))
+
+
+# gets user name for the session
+def get_name():
+    while True:
+        user_name = input("Please enter your name (must be 3-10 characters):\n").strip()
+
+        # checks that user_name is a valid length and only contains letters of the alphabet
+        if len(user_name) < 3 or len(user_name) > 10:
+            print("\nSorry that is not a valid name, remember it needs to be 3-10 characters long.\n")
+        elif user_name.isalpha() == False:
+            print("\nSorry that is not a valid name, it can't contain numbers or any special characters.\n")
+        else:
+            print(f"\n\nWelcome {user_name}!")
+            break
+
+    return user_name
+
+# gets user topic selection
+def get_topic(number_of_topics):
+    while True:
+
+        # try/except block to prevent the app from crashing when the user enters an invalid input
+        try:
+            # ask user for their selection
+            selected_topic = int(input("What topic would you like to be quizzed on? (Please enter the topic number)\n").strip())
+            
+            # number must be within the range of the number of topics to be valid 
+            if selected_topic not in range(1, number_of_topics + 1):
+                print("\nSorry, that isn't a valid selection.\n")
+            else:
+                break
+
+        # catch the exception whenever anything other than a number is entered
+        except Exception:
+            print("\nSorry, that isn't a valid selection.\n")
+
+    return selected_topic
+
+# clear screen function
+def clear():
+    if os.name == "nt":
+        command = "cls"
+    else:
+        command = "clear"
+
+    os.system(command)
+
+
 # countdown function to be used before each question is displayed
 def countdown():
     countdown_length = 5
     while countdown_length > 0:
-        print(f"00:0{countdown_length}", end="\r")
+
+        # first part of the write statement moves the cursor back to the left to write over the previous text
+        sys.stdout.write("\u001b[10D" + f"00:0{countdown_length}")
+
+        # need to flush the buffer to actually display the text or nothing will be shown until the function ends
+        sys.stdout.flush()
         countdown_length -= 1
         time.sleep(1)
 
 
-# welcome screen
-print("\n\n\n")
-print("                  CCCCCCCCCCCCC lllllll                    hhhhhhh                                                           tttt            !!!           ")
-print("               CCC::::::::::::C l:::::l                    h:::::h                                                        ttt:::t           !!:!!          ")
-print("             CC:::::::::::::::C l:::::l                    h:::::h                                                        t:::::t           !:::!          ")
-print("            C:::::CCCCCCCC::::C l:::::l                    h:::::h                                                        t:::::t           !:::!          ")
-print("           C:::::C       CCCCCC  l::::l    aaaaaaaaaaaaa    h::::h hhhhh           ooooooooooo       ooooooooooo    ttttttt:::::ttttttt     !:::!          ")
-print("          C:::::C                l::::l    a::::::::::::a   h::::hh:::::hhh      oo:::::::::::oo   oo:::::::::::oo  t:::::::::::::::::t     !:::!          ")
-print("          C:::::C                l::::l    aaaaaaaaa:::::a  h::::::::::::::hh   o:::::::::::::::o o:::::::::::::::o t:::::::::::::::::t     !:::!          ")
-print("          C:::::C                l::::l             a::::a  h:::::::hhh::::::h  o:::::ooooo:::::o o:::::ooooo:::::o tttttt:::::::tttttt     !:::!          ")
-print("          C:::::C                l::::l      aaaaaaa:::::a  h::::::h   h::::::h o::::o     o::::o o::::o     o::::o       t:::::t           !:::!          ")
-print("          C:::::C                l::::l    aa::::::::::::a  h:::::h     h:::::h o::::o     o::::o o::::o     o::::o       t:::::t           !:::!          ")
-print("          C:::::C                l::::l   a::::aaaa::::::a  h:::::h     h:::::h o::::o     o::::o o::::o     o::::o       t:::::t           !!:!!          ")
-print("           C:::::C       CCCCCC  l::::l  a::::a    a:::::a  h:::::h     h:::::h o::::o     o::::o o::::o     o::::o       t:::::t    tttttt  !!!           ")
-print("            C:::::CCCCCCCC::::C l::::::l a::::a    a:::::a  h:::::h     h:::::h o:::::ooooo:::::o o:::::ooooo:::::o       t::::::tttt:::::t                ")
-print("             CC:::::::::::::::C l::::::l a:::::aaaa::::::a  h:::::h     h:::::h o:::::::::::::::o o:::::::::::::::o       tt::::::::::::::t  !!!           ")
-print("               CCC::::::::::::C l::::::l  a::::::::::aa:::a h:::::h     h:::::h  oo:::::::::::oo   oo:::::::::::oo          tt:::::::::::tt !!:!!          ")
-print("                  CCCCCCCCCCCCC llllllll   aaaaaaaaaa  aaaa hhhhhhh     hhhhhhh    ooooooooooo       ooooooooooo              ttttttttttt    !!!           ")
-print("\n")
-print("{:^155}".format("by Andrew Gregorovic"))
+def print_topic_and_question_number(topic, question_number, quiz_data):
+    print("\n")
+    print(f"{topic}")
+    print("")
+    print(f"Question {i + 1}/{len(current_quiz[0])}")
+    print("\n")
+
+
+# start of the app
+clear()
+welcome()
 print("\n\n\n\n")
-print("{:^155}".format("Press enter to continue\n"))
-input("{:^77}".format(""))
+continue_input()
 
 # clear screen and display the instructions/rules
-os.system('cls' if os.name == 'nt' else 'clear')
+clear()
 print("\n\n\n")
-print("{:^155}".format("Clahoot!\n\n"))
+print("{:^155}".format("Clahoot!"))
+print("\n")
 print("""Clahoot! is a multiple choice quiz game created as a terminal application based on the online Kahoot! game.
-It has been adapted to a single player experience with a leaderboard rather than an online multiplayer game and follows a similar scoring style to Kahoot!.\n\n""")
-print("{:^155}".format("Instructions\n\n"))
+It has been adapted to a single player experience with a leaderboard rather than an online multiplayer game and follows a similar scoring style to Kahoot!.""")
+print("\n")
+print("{:^155}".format("Instructions"))
+print("\n")
 print("""The app will choose 10 random questions from a pool of potential questions for the topic you select.
 To input your answer, type the letter corresponding to the choice you would like to select and press 'Enter'.
 Before each question is displayed there will be a short countdown. Once it ends, a hidden timer will start to track how quickly you answer the question.
@@ -144,30 +219,18 @@ After each question you will be given time to review the question and answer bef
 You will be awarded points for each correct answer. You will receive additional points for faster answers and maintaining an answer streak.
 
 At the end of the quiz, your final score will be displayed along with how many questions you answered correctly.
-You will also have the option to view the current leaderboard for the topic you selected.
-\n\n\n\n""")
-print("{:^155}".format("Press enter to continue to topic selection"))
-input("{:^77}".format(""))
-
-# clear screen and ask user to enter name, repeat until they enter a valid name that only contains letters of the alphabet
-os.system('cls' if os.name == 'nt' else 'clear')
+You will also have the option to view the current leaderboard for the topic you selected.""")
 print("\n\n\n")
-while True:
-    user_name = input("Please enter your name (must be 3-10 characters):\n").strip()
+continue_input()
 
-    # checks that user_name is a valid length and only contains letters of the alphabet
-    if len(user_name) < 3 or len(user_name) > 10:
-        print("\nSorry that is not a valid name, remember it needs to be 3-10 characters long.\n")
-    elif user_name.isalpha() == False:
-        print("\nSorry that is not a valid name, it can't contain numbers or any special characters.\n")
-    else:
-        print(f"\n\nWelcome {user_name}!")
-        break
+# clear screen and get user name
+clear()
+print("\n\n\n")
+user_name = get_name()
 
 # main application loop, allows user to take the quiz again without having to enter their name again but lets them choose a different topic
 while True:
 
-    # ask user to select a quiz topic
     print("\n\n")
     print("""Before starting there are 3 topics available for you to choose between,\n
         1) Capitol Cities
@@ -175,33 +238,21 @@ while True:
         3) World Languages""")
     print("\n")
 
-    # repeat until user makes a valid selection
-    while True:
-
-        # try/except block to prevent the app from crashing when the user enters an invalid input
-        try:
-            # ask user for their selection
-            selected_topic = int(input("What topic would you like to be quizzed on? (Please enter the topic number)\n").strip())
-            if selected_topic == 1:
-                current_quiz = randomizer(qd.test_dict)
-                quiz_topic = "Capitol Cities"
-                break
-            elif selected_topic == 2:
-                current_quiz = randomizer(qd.test_dict)
-                quiz_topic = "World Geography"
-                break
-            elif selected_topic == 3:
-                current_quiz = randomizer(qd.test_dict)
-                current_quiz = "World Languages"
-                break
-            else:
-                print("\nSorry, that isn't a valid selection.\n")
-        except Exception:
-            print("\nSorry, that isn't a valid selection.\n")
+    # set the number of topics manually according to the print statement above then call the function to get users selection
+    number_of_topics = 3
+    selected_topic = get_topic(number_of_topics)
+    if selected_topic == 1:
+        current_quiz = randomizer(qd.test_dict)
+        quiz_topic = "Capitol Cities"
+    elif selected_topic == 2:
+        current_quiz = randomizer(qd.test_dict)
+        quiz_topic = "World Geography"
+    elif selected_topic == 3:
+        current_quiz = randomizer(qd.test_dict)
+        quiz_topic = "World Languages"
 
     print("\n\n\n")
     input("Press enter when you are ready to begin the quiz")
-
 
     # initialise variables that will be used during the quiz
     answer_streak = 0
@@ -213,22 +264,19 @@ while True:
 
     # loop through all the questions
     for i in range(9, len(current_quiz[0])):
-        os.system('cls' if os.name == 'nt' else 'clear')
+        clear()
 
         # prints the current question number and a countdown to it being displayed, also starts a timer when the countdown ends
-        print("\n\n\n")
-        print(f"Question {i + 1}/{len(current_quiz[0])}")
-        print("\n")
+        print_topic_and_question_number(quiz_topic, i, current_quiz)
         countdown()
-        os.system('cls' if os.name == 'nt' else 'clear')
+        clear()
         start_time = time.time()
 
         # print the current question
-        print("\n\n\n")
-        print(f"Question {i + 1}/{len(current_quiz[0])}\n\n")
-        print(f"{current_quiz[0][i]}\n")
+        print_topic_and_question_number(quiz_topic, i, current_quiz)
 
         # iterates over the choices tuple to print each one out
+        print(f"{current_quiz[0][i]}\n")
         for x in range(0, len(choices)):
             print(f"    {choices[x]}) {current_quiz[x + 1][i]}")
 
@@ -245,11 +293,10 @@ while True:
         # stop the timer when user enters a valid answer and find the difference to get time taken
         end_time = time.time()
         time_taken = end_time - start_time
-        os.system('cls' if os.name == 'nt' else 'clear')
-        print("\n\n\n")
+        clear()
 
         # reprints the question for review, showing what the correct answer was and what answer the user gave
-        print(f"Question {i + 1}/{len(current_quiz[0])}\n\n")
+        print_topic_and_question_number(quiz_topic, i, current_quiz)
         print(f"{current_quiz[0][i]}\n")
         for x in range(0, len(choices)):
             print(f"    {choices[x]}) {current_quiz[x + 1][i]}", end=" ")
@@ -310,7 +357,7 @@ while True:
         avg_time = 0
 
     # clear screen and display results
-    os.system('cls' if os.name == 'nt' else 'clear')
+    clear()
     print("\n\n\n")
     print("{:^155}".format("Congratulations on completing the quiz!\n\n"))
     print("{:^155}".format(f"You answered {total_correct} out of {len(current_quiz[0])} questions correctly!\n"))
@@ -329,6 +376,7 @@ while True:
 
     # first checks if user selected view leaderboard
     if end_of_quiz_input == "l":
+        clear()
         leaderboard()
 
         # need to get user input again, since we're at the leaderboard the print message needs to be different
@@ -351,7 +399,11 @@ while True:
 
     # check user input to determine if the app stops or continues again, clear the screen if we continue
     if end_of_quiz_input == "y":
-        os.system('cls' if os.name == 'nt' else 'clear')
+        clear()
         continue
     else:
+        clear()
+        print("\n")
+        print("{:^155}".format("Thanks for playing,"))
+        welcome()
         break
