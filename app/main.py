@@ -143,14 +143,7 @@ def leaderboard(quiz_topic, quiz_data, user_name, score):
     with open(path + "/leaderboard.pickle", "wb") as f:
         pickle.dump(full_leaderboard, f, pickle.HIGHEST_PROTOCOL)
 
-    # display leaderboard
-    print("\n\n\n")
-    print("{:^187}".format(f"\u001b[1mHigh Scores for the \u001b[4m{quiz_topic}\u001b[0m\u001b[1m topic with \u001b[4m{len(quiz_data[0])}\u001b[0m\u001b[1m questions\u001b[0m"))
-    print("\n")
-    print(" " * 62 + "{:^16}|{:^11}".format("Name", "Score"))
-    print(" " * 62 + "----------------------------")
-    for name, score in current_leaderboard:
-        print (" " * 62 + "   {:<13}|{:^11}".format(name, score))
+    return current_leaderboard
 
 
 # welcome screen
@@ -285,16 +278,19 @@ def get_user_answer(choices):
 def print_question_review(question_number, quiz_data, choices, user_answer, time):
     print(f"{current_quiz[0][i]}\n")
     for x in range(0, len(choices)):
-        print(f"    {choices[x]}) {current_quiz[x + 1][i]}", end=" ")
 
         # appends different text to each choice depending on if its the answer or the users input
         if current_quiz[5][i] == choices[x] and user_answer == choices[x]:
+            print(f"   \u001b[1m\u001b[7m {choices[x]}) {current_quiz[x + 1][i]} \u001b[0m ", end="")
             print("- Correct/Your answer")
         elif current_quiz[5][i] == choices[x]:
+            print(f"    \u001b[1m{choices[x]}) {current_quiz[x + 1][i]}\u001b[0m ", end="")
             print("- Correct answer")
         elif user_answer == choices[x] and current_quiz[5][i] != choices[x]:
+            print(f"   \u001b[7m {choices[x]}) {current_quiz[x + 1][i]} \u001b[0m ", end="")
             print("- Your answer")
         else:
+            print(f"    {choices[x]}) {current_quiz[x + 1][i]}", end=" ")
             print("")
 
     print("\n\n")
@@ -465,6 +461,9 @@ while True:
     fun_fact(avg_time, highest_streak)
     print("\n\n\n")
 
+    # calls leaderboard function to save the users score if it qualifies as a high score and save the data to a variable if the user wants to view it
+    current_leaderboard = leaderboard(quiz_topic, current_quiz, user_name, total_score)
+
     # checks for a valid input, repeats asking user what they would like to do until one is given
     while True:
         print("{:^155}".format("To view the leaderboard enter 'l', otherwise would you like to take another quiz? (y/n): "))
@@ -478,7 +477,15 @@ while True:
     # first checks if user selected view leaderboard
     if end_of_quiz_input == "l":
         clear()
-        leaderboard(quiz_topic, current_quiz, user_name, total_score)
+
+        # display leaderboard if requested
+        print("\n\n\n")
+        print("{:^187}".format(f"\u001b[1mHigh Scores for the \u001b[4m{quiz_topic}\u001b[0m\u001b[1m topic with \u001b[4m{len(current_quiz[0])}\u001b[0m\u001b[1m questions\u001b[0m"))
+        print("\n")
+        print(" " * 62 + "{:^16}|{:^11}".format("Name", "Score"))
+        print(" " * 62 + "----------------------------")
+        for name, score in current_leaderboard:
+            print (" " * 62 + "   {:<13}|{:^11}".format(name, score))
 
         # need to get user input again, since we're at the leaderboard the print message needs to be different
         # also need to print another message if the user tries to input 'l' again
