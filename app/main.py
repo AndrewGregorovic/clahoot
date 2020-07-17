@@ -6,7 +6,7 @@ import sys
 import time
 
 from randomizer import randomizer, get_topic
-from scoring import scoring, get_avg_time
+from scoring import scoring, get_avg_time, print_current_score
 from leaderboard import leaderboard, print_leaderboard, leaderboard_input
 
 import preset_leaderboard as plb
@@ -171,9 +171,9 @@ def print_question_review(question_number, quiz_data, choices, user_answer, time
 
 
 def fun_fact(time, streak):
-    if random.randint(1, 2) == 1:
+    #if random.randint(1, 2) == 1:
         print("{:^155}".format(f"Fun fact: You had an average answer speed of {time:.1f} seconds for the questions that you answered correctly!"))
-    else:
+    #else:
         print("{:^155}".format(f"Fun fact: Your highest answer streak for the quiz was {streak} correct answers in a row!"))
 
 
@@ -259,16 +259,20 @@ while True:
     input("Press enter when you are ready to begin the quiz")
 
     # initialise variables that will be used during the quiz
-    answer_streak = 0
-    current_points = 0
-    total_score = 0
-    total_correct = 0
-    total_time = 0
-    highest_streak = 0
     choices = ("a", "b", "c", "d")
 
+    # score data is kept as a list to make the code cleaner but it makes it slightly more confusing to keep track of what value is what piece of info
+    # it is set up to be: [0] pts for current question
+    #                     [1] total pts
+    #                     [2] total correct answers
+    #                     [3] total time for correct answers
+    #                     [4] current answer streak
+    #                     [5] highest answer streak
+    #                     [6] previous answer streak
+    score_data = [0, 0, 0, 0, 0, 0, 0]
+
     # loop through all the questions
-    for i in range(len(current_quiz[0]) - 2, len(current_quiz[0])):
+    for i in range(len(current_quiz[0]) - 5, len(current_quiz[0])):
         clear()
 
         # prints the current topic and question number, and a countdown to it being displayed, also starts a timer when the countdown ends
@@ -294,27 +298,10 @@ while True:
         print_question_review(i, current_quiz, choices, user_answer, time_taken)
 
         # calls the scoring function and updates variables with the values returned
-        score = scoring(current_quiz[5][i], user_answer, time_taken, current_points, total_score, total_correct, total_time, answer_streak, highest_streak)
-        current_points = score[0]
-        total_score = score[1]
-        total_correct = score[2]
-        total_time = score[3]
-        answer_streak = score[4]
-        highest_streak = score[5]
+        score_data = scoring(current_quiz[5][i], user_answer, time_taken, score_data)
 
-        print("\n--------------------------------------------------------------------------------------------------------\n")
-        print(f"You received {current_points} points for this question.\n")
-        print(f"Your current score is: {total_score}\n")
-
-        # prints out a message informing the user of the current state of their answer streak
-        if answer_streak == 1:
-            print("You have started an answer streak by answering this question correctly.")
-        elif answer_streak > 1:
-            print(f"You are on a roll with an answer streak of {answer_streak}!")
-        elif answer_streak == 0 and score[5] == 0:
-            print("")
-        else:
-            print(f"You have dropped your answer streak of {score[6]}.")
+        # prints current score info as part of the review screen
+        print_current_score(score_data)
 
         # print a different continue message depending on if it's the last question or not
         print("\n\n")
@@ -323,19 +310,20 @@ while True:
         else:
             input("Press enter to continue to your results")
 
-    avg_time = get_avg_time(total_time, total_correct)
+    # get avg answer time for correctly answered questions
+    avg_time = get_avg_time(score_data[3], score_data[2])
 
     # clear screen and display results
     clear()
     print("\n\n\n")
     print("{:^163}".format("\u001b[4mCongratulations on completing the quiz!\u001b[0m\n\n"))
-    print("{:^171}".format(f"You answered \u001b[1m{total_correct}\u001b[0m out of \u001b[1m{len(current_quiz[0])}\u001b[0m questions correctly!\n"))
-    print("{:^163}".format(f"Your final score is \u001b[1m{total_score}\u001b[0m\n\n\n"))
-    fun_fact(avg_time, highest_streak)
+    print("{:^171}".format(f"You answered \u001b[1m{score_data[2]}\u001b[0m out of \u001b[1m{len(current_quiz[0])}\u001b[0m questions correctly!\n"))
+    print("{:^163}".format(f"Your final score is \u001b[1m{score_data[1]}\u001b[0m\n\n\n"))
+    fun_fact(avg_time, score_data[5])
     print("\n\n\n")
 
     # calls leaderboard function to save the users score if it qualifies as a high score and save current leaderboard data to a variable if the user wants to view it
-    current_leaderboard = leaderboard(quiz_topic, current_quiz, user_name, total_score)
+    current_leaderboard = leaderboard(quiz_topic, current_quiz, user_name, score_data[1])
 
     # need to get user input while on the results screen
     end_of_quiz_input = results_input()
