@@ -18,7 +18,7 @@ Note: This was created in a linux environment, so it may not run 100% correctly 
 3. Enter "which python" into the terminal, copy the path given by the command.
 4. Open main.py in a text editor and replace the path on line 1 with the path you copied just before. Make sure you keep the #! on line 1!
 5. Go back to the terminal and enter "chmod +x path/to/location/main.py".
-6. Now you can run Clahoot! by simply using the command "path/to/location/main.py".
+6. Now you can run Clahoot! by simply using the command "./path/to/location/main.py".
 
 Note: If main.py is in the current working directory you still need to indicate that in the terminal by using "./main.py".
 
