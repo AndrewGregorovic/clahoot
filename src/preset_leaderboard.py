@@ -1,6 +1,6 @@
 # preset leaderboard for the app to fallback to if the current leaderboard file is not found
 preset_leaderboard = {
-                    "Capitol Cities": {
+                    "Capital Cities": {
                         10: [
                             ("Bob", 2175),
                             ("Sarah", 2000),

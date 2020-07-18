@@ -9,7 +9,6 @@ from randomizer import randomizer, get_topic
 from scoring import scoring, get_avg_time, print_current_score
 from leaderboard import leaderboard, print_leaderboard, leaderboard_input
 
-import preset_leaderboard as plb
 import question_dictionaries as qd
 
 
@@ -262,9 +261,9 @@ It has been adapted to a single player experience with a leaderboard rather than
         if "--start" not in sys.argv and "--random" not in sys.argv:
             print("\n\n")
             print("""Before starting there are 3 topics available for you to choose between,\n
-        1) Capitol Cities
+        1) Capital Cities
         2) World Geography
-        3) World Languages""")
+        3) World Languages (Currently test questions)""")
             print("\n")
 
         # set the number of topics manually according to the print statement above then call the function to get users selection
@@ -273,10 +272,10 @@ It has been adapted to a single player experience with a leaderboard rather than
 
         # after getting topic selection, get the quiz data from randomizer() and set the topic to a variable
         if selected_topic == 1:
-            current_quiz = randomizer(qd.test_dict)
-            quiz_topic = "Capitol Cities"
+            current_quiz = randomizer(qd.capital_cities)
+            quiz_topic = "Capital Cities"
         elif selected_topic == 2:
-            current_quiz = randomizer(qd.test_dict)
+            current_quiz = randomizer(qd.world_geography)
             quiz_topic = "World Geography"
         elif selected_topic == 3:
             current_quiz = randomizer(qd.test_dict)
