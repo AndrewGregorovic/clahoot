@@ -25,7 +25,7 @@ def clear():
 
 # countdown function to be used before each question is displayed
 def countdown():
-    countdown_length = 5
+    countdown_length = 3
     while countdown_length > 0:
 
         # first part of the write statement moves the cursor back to the left to write over the previous text
@@ -35,6 +35,17 @@ def countdown():
         sys.stdout.flush()
         countdown_length -= 1
         time.sleep(1)
+
+
+# quit function to end the game
+def exit_quiz():
+    clear()
+    print("\n")
+    print("{:^155}".format("Thanks for playing,"))
+    welcome()
+    time.sleep(5)
+    clear()
+    exit()
 
 
 # welcome screen
@@ -83,7 +94,8 @@ def options(opts):
 # ask user to press enter to continue
 def continue_input():
     print("{:^155}".format("Press enter to continue"))
-    input("{:^77}".format(""))
+    if input("{:^77}".format("")) == "quit":
+        exit_quiz()
 
 
 # gets user name for the session
@@ -91,8 +103,11 @@ def get_name():
     while True:
         user_name = input("Please enter your name (must be 3-10 characters):\n").strip()
 
+        if user_name == "quit":
+            exit_quiz()
+
         # checks that user_name is a valid length and only contains letters of the alphabet
-        if len(user_name) < 3 or len(user_name) > 10:
+        elif len(user_name) < 3 or len(user_name) > 10:
             print("\nSorry that is not a valid name, remember it needs to be 3-10 characters long.\n")
         elif user_name.isalpha() == False:
             print("\nSorry that is not a valid name, it can't contain numbers or any special characters.\n")
@@ -129,8 +144,11 @@ def get_user_answer(choices):
         # sanitises user input so that it can be compared to valid inputs
         user_answer = input("Enter your answer: ").strip().lower()
 
+        if user_answer == "quit":
+            exit_quiz()
+
         # checks that input is one of the 4 choices
-        if user_answer in choices:
+        elif user_answer in choices:
             break
         else:
             print("Sorry that is not one of the 4 choices, please try again.")
@@ -182,7 +200,9 @@ def results_input():
     while True:
         print("{:^155}".format("To view the leaderboard enter 'l', otherwise would you like to take another quiz? (y/n): "))
         end_of_quiz_input = input("{:^77}".format("")).strip().lower()
-        if end_of_quiz_input != "l" and end_of_quiz_input != "y" and end_of_quiz_input != "n":
+        if end_of_quiz_input == "quit":
+            exit_quiz()
+        elif end_of_quiz_input != "l" and end_of_quiz_input != "y" and end_of_quiz_input != "n":
             print("")
             print("{:^155}".format("Sorry that isn't a valid option, please try again.\n"))
         else:
@@ -193,7 +213,7 @@ def results_input():
 
 # display readme if app started with --help option instead of running the quiz app
 if "--help" in sys.argv:
-    with open("README.md") as f:
+    with open(sys.path[0] + "/README.md") as f:
         print(f.read())
 else:
     # start the quiz app
@@ -222,7 +242,9 @@ It has been adapted to a single player experience with a leaderboard rather than
 - At the end of the quiz, your final score will be displayed along with how many questions you answered correctly and a fun fact about your performance.
 - Your final score will be added to the leaderboard if it qualifies as one of the top 10 score for the current topic and question length.
 - You will also have the option to view the current leaderboard for the topic you selected as well as options to play again or quit.""")
-        print("\n\n\n")
+        print("\n")
+        print("{:^163}".format("\u001b[1mYou can exit the app at any time by entering 'quit'\u001b[0m"))
+        print("\n")
         continue_input()
 
     # clear screen and get user name unless app is started with --start or --anon
@@ -311,9 +333,11 @@ It has been adapted to a single player experience with a leaderboard rather than
             # print a different continue message depending on if it's the last question or not
             print("\n\n")
             if i + 1 != len(current_quiz[0]):
-                input("Press enter to continue to the next question")
+                if input("Press enter to continue to the next question") == "quit":
+                    exit_quiz()
             else:
-                input("Press enter to continue to your results")
+                if input("Press enter to continue to your results") == "quit":
+                    exit_quiz()
 
         # get avg answer time for correctly answered questions
         avg_time = get_avg_time(score_data[3], score_data[2])
@@ -348,10 +372,4 @@ It has been adapted to a single player experience with a leaderboard rather than
             clear()
             continue
         else:
-            clear()
-            print("\n")
-            print("{:^155}".format("Thanks for playing,"))
-            welcome()
-            time.sleep(5)
-            clear()
-            break
+            exit_quiz()

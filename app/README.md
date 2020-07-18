@@ -1,9 +1,5 @@
 # Clahoot!
 
-## About
-Clahoot! is a multiple choice quiz game created as a terminal application based on the online Kahoot! game.
-It has been adapted to a single player experience with a leaderboard rather than an online multiplayer game and follows a similar scoring style to Kahoot!.
-
 ## Requirements
 The only requirement to run Clahoot! on your local machine you will need to have Python 3.8 installed.
 
@@ -31,15 +27,4 @@ Clahoot! can be run with the following options:
 - --help: displays the contents of this readme file instead of running the actual app.
 - --anon: runs Clahoot!, will ask you for a topic selection but does not ask you to enter a name, name will be set to "anonymous". This persists for the current session.
 - --random: runs Clahoot!, will ask you for a name but not for your topic selection, a topic will be selected at random. This persists for the current session.
-- --start: combination of --anon and --random, runs Clahoot! but will not ask for a name or topic selection. After the welcome screen you will be taken straight to the start of a quiz.
-
-## How to play
-- The app will randomly choose the length of the quiz (10-20 questions) and the questions that you will be asked.
-- The questions will be from a pool of potential questions for the topic you select.
-- To input your answer, type the letter corresponding to the choice you would like to select and press 'Enter'.
-- Before each question is displayed there will be a short countdown. Once it ends, a hidden timer will start to track how quickly you answer the question.
-- After each question you will be given time to review the question and answer before moving on. This screen will also display your current score and speed.
-- You will be awarded points for each correct answer. You will receive additional points for faster answers and maintaining an answer streak.
-- At the end of the quiz, your final score will be displayed along with how many questions you answered correctly and a fun fact about your performance.
-- Your final score will be added to the leaderboard if it qualifies as one of the top 10 score for the current topic and question length.
-- You will also have the option to view the current leaderboard for the topic you selected as well as options to play again or quit.
+- --start: combination of --anon and --random, runs Clahoot! but will not ask for a name or topic selection and will skip the quiz instructions. After the welcome screen you will be taken straight to the start of a quiz.

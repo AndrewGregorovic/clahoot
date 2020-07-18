@@ -1,4 +1,35 @@
 import random
+import os
+import time
+
+def clear():
+    if os.name == "nt":
+        command = "cls"
+    else:
+        command = "clear"
+
+    os.system(command)
+
+def welcome():
+    print("\n\n")
+    print("                  CCCCCCCCCCCCC lllllll                    hhhhhhh                                                           tttt            !!!           ")
+    print("               CCC::::::::::::C l:::::l                    h:::::h                                                        ttt:::t           !!:!!          ")
+    print("             CC:::::::::::::::C l:::::l                    h:::::h                                                        t:::::t           !:::!          ")
+    print("            C:::::CCCCCCCC::::C l:::::l                    h:::::h                                                        t:::::t           !:::!          ")
+    print("           C:::::C       CCCCCC  l::::l    aaaaaaaaaaaaa    h::::h hhhhh           ooooooooooo       ooooooooooo    ttttttt:::::ttttttt     !:::!          ")
+    print("          C:::::C                l::::l    a::::::::::::a   h::::hh:::::hhh      oo:::::::::::oo   oo:::::::::::oo  t:::::::::::::::::t     !:::!          ")
+    print("          C:::::C                l::::l    aaaaaaaaa:::::a  h::::::::::::::hh   o:::::::::::::::o o:::::::::::::::o t:::::::::::::::::t     !:::!          ")
+    print("          C:::::C                l::::l             a::::a  h:::::::hhh::::::h  o:::::ooooo:::::o o:::::ooooo:::::o tttttt:::::::tttttt     !:::!          ")
+    print("          C:::::C                l::::l      aaaaaaa:::::a  h::::::h   h::::::h o::::o     o::::o o::::o     o::::o       t:::::t           !:::!          ")
+    print("          C:::::C                l::::l    aa::::::::::::a  h:::::h     h:::::h o::::o     o::::o o::::o     o::::o       t:::::t           !:::!          ")
+    print("          C:::::C                l::::l   a::::aaaa::::::a  h:::::h     h:::::h o::::o     o::::o o::::o     o::::o       t:::::t           !!:!!          ")
+    print("           C:::::C       CCCCCC  l::::l  a::::a    a:::::a  h:::::h     h:::::h o::::o     o::::o o::::o     o::::o       t:::::t    tttttt  !!!           ")
+    print("            C:::::CCCCCCCC::::C l::::::l a::::a    a:::::a  h:::::h     h:::::h o:::::ooooo:::::o o:::::ooooo:::::o       t::::::tttt:::::t                ")
+    print("             CC:::::::::::::::C l::::::l a:::::aaaa::::::a  h:::::h     h:::::h o:::::::::::::::o o:::::::::::::::o       tt::::::::::::::t  !!!           ")
+    print("               CCC::::::::::::C l::::::l  a::::::::::aa:::a h:::::h     h:::::h  oo:::::::::::oo   oo:::::::::::oo          tt:::::::::::tt !!:!!          ")
+    print("                  CCCCCCCCCCCCC llllllll   aaaaaaaaaa  aaaa hhhhhhh     hhhhhhh    ooooooooooo       ooooooooooo              ttttttttttt    !!!           ")
+    print("\n")
+    print("{:^163}".format("\u001b[1mby Andrew Gregorovic\u001b[0m"))
 
 # gets user topic selection
 def get_topic(number_of_topics, opts):
@@ -13,13 +44,24 @@ def get_topic(number_of_topics, opts):
             try:
 
                 # ask user for their selection
-                selected_topic = int(input("What topic would you like to be quizzed on? (Please enter the topic number)\n").strip())
-                
-                # number must be within the range of the number of topics to be valid 
-                if selected_topic not in range(1, number_of_topics + 1):
-                    print("\nSorry, that isn't a valid selection.\n")
+                selected_topic = input("What topic would you like to be quizzed on? (Please enter the topic number)\n").strip()
+
+                if selected_topic == "quit":
+                    clear()
+                    print("\n")
+                    print("{:^155}".format("Thanks for playing,"))
+                    welcome()
+                    time.sleep(5)
+                    clear()
+                    exit()
                 else:
-                    break
+                    selected_topic = int(selected_topic)
+
+                    # number must be within the range of the number of topics to be valid 
+                    if selected_topic not in range(1, number_of_topics + 1):
+                        print("\nSorry, that isn't a valid selection.\n")
+                    else:
+                        break
 
             # catch the exception whenever anything other than a number is entered
             except Exception:

@@ -1,5 +1,36 @@
 import pickle
 import sys
+import os
+import time
+
+def clear():
+    if os.name == "nt":
+        command = "cls"
+    else:
+        command = "clear"
+
+    os.system(command)
+
+def welcome():
+    print("\n\n")
+    print("                  CCCCCCCCCCCCC lllllll                    hhhhhhh                                                           tttt            !!!           ")
+    print("               CCC::::::::::::C l:::::l                    h:::::h                                                        ttt:::t           !!:!!          ")
+    print("             CC:::::::::::::::C l:::::l                    h:::::h                                                        t:::::t           !:::!          ")
+    print("            C:::::CCCCCCCC::::C l:::::l                    h:::::h                                                        t:::::t           !:::!          ")
+    print("           C:::::C       CCCCCC  l::::l    aaaaaaaaaaaaa    h::::h hhhhh           ooooooooooo       ooooooooooo    ttttttt:::::ttttttt     !:::!          ")
+    print("          C:::::C                l::::l    a::::::::::::a   h::::hh:::::hhh      oo:::::::::::oo   oo:::::::::::oo  t:::::::::::::::::t     !:::!          ")
+    print("          C:::::C                l::::l    aaaaaaaaa:::::a  h::::::::::::::hh   o:::::::::::::::o o:::::::::::::::o t:::::::::::::::::t     !:::!          ")
+    print("          C:::::C                l::::l             a::::a  h:::::::hhh::::::h  o:::::ooooo:::::o o:::::ooooo:::::o tttttt:::::::tttttt     !:::!          ")
+    print("          C:::::C                l::::l      aaaaaaa:::::a  h::::::h   h::::::h o::::o     o::::o o::::o     o::::o       t:::::t           !:::!          ")
+    print("          C:::::C                l::::l    aa::::::::::::a  h:::::h     h:::::h o::::o     o::::o o::::o     o::::o       t:::::t           !:::!          ")
+    print("          C:::::C                l::::l   a::::aaaa::::::a  h:::::h     h:::::h o::::o     o::::o o::::o     o::::o       t:::::t           !!:!!          ")
+    print("           C:::::C       CCCCCC  l::::l  a::::a    a:::::a  h:::::h     h:::::h o::::o     o::::o o::::o     o::::o       t:::::t    tttttt  !!!           ")
+    print("            C:::::CCCCCCCC::::C l::::::l a::::a    a:::::a  h:::::h     h:::::h o:::::ooooo:::::o o:::::ooooo:::::o       t::::::tttt:::::t                ")
+    print("             CC:::::::::::::::C l::::::l a:::::aaaa::::::a  h:::::h     h:::::h o:::::::::::::::o o:::::::::::::::o       tt::::::::::::::t  !!!           ")
+    print("               CCC::::::::::::C l::::::l  a::::::::::aa:::a h:::::h     h:::::h  oo:::::::::::oo   oo:::::::::::oo          tt:::::::::::tt !!:!!          ")
+    print("                  CCCCCCCCCCCCC llllllll   aaaaaaaaaa  aaaa hhhhhhh     hhhhhhh    ooooooooooo       ooooooooooo              ttttttttttt    !!!           ")
+    print("\n")
+    print("{:^163}".format("\u001b[1mby Andrew Gregorovic\u001b[0m"))
 
 # reads and saves the leaderboard information to a separate text file and displays the leaderboard at the end of the quiz
 # updates the leaderboard if user makes it into the top 10
@@ -49,7 +80,15 @@ def leaderboard_input():
         # the user isn't allowed to input 'l' again and the only other inputs allowed are 'y' and 'n' which we haven't checked yet
         # so we can save the input to the same variable as before
         end_of_quiz_input = input("{:^77}".format("")).strip().lower()
-        if end_of_quiz_input != "l" and end_of_quiz_input != "y" and end_of_quiz_input != "n":
+        if end_of_quiz_input == "quit":
+            clear()
+            print("\n")
+            print("{:^155}".format("Thanks for playing,"))
+            welcome()
+            time.sleep(5)
+            clear()
+            exit()
+        elif end_of_quiz_input != "l" and end_of_quiz_input != "y" and end_of_quiz_input != "n":
             print("")
             print("{:^155}".format("Sorry that isn't a valid option, please try again.\n"))
 
