@@ -282,7 +282,8 @@ It has been adapted to a single player experience with a leaderboard rather than
             quiz_topic = "World Languages"
 
         print("\n\n\n")
-        input("Press enter when you are ready to begin the quiz")
+        if input("Press enter when you are ready to begin the quiz ") == "quit":
+            exit_quiz()
 
         # initialise variables that will be used during the quiz
         choices = ("a", "b", "c", "d")
@@ -332,10 +333,10 @@ It has been adapted to a single player experience with a leaderboard rather than
             # print a different continue message depending on if it's the last question or not
             print("\n\n")
             if i + 1 != len(current_quiz[0]):
-                if input("Press enter to continue to the next question") == "quit":
+                if input("Press enter to continue to the next question ") == "quit":
                     exit_quiz()
             else:
-                if input("Press enter to continue to your results") == "quit":
+                if input("Press enter to continue to your results ") == "quit":
                     exit_quiz()
 
         # get avg answer time for correctly answered questions
